@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -99,5 +100,58 @@
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Custom animations for Lazy Alarm */
+@layer utilities {
+  @keyframes gradient-shift {
+    0%, 100% {
+      background: linear-gradient(135deg, #fce7f3 0%, #fed7aa 50%, #fce7f3 100%);
+    }
+    25% {
+      background: linear-gradient(135deg, #fed7aa 0%, #fde68a 50%, #fce7f3 100%);
+    }
+    50% {
+      background: linear-gradient(135deg, #fde68a 0%, #fce7f3 50%, #fed7aa 100%);
+    }
+    75% {
+      background: linear-gradient(135deg, #fce7f3 0%, #fde68a 50%, #fed7aa 100%);
+    }
+  }
+
+  @keyframes nap-gradient {
+    0%, 100% {
+      background: linear-gradient(135deg, #581c87 0%, #7c3aed 50%, #1e3a8a 100%);
+    }
+    33% {
+      background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #3730a3 100%);
+    }
+    66% {
+      background: linear-gradient(135deg, #a855f7 0%, #581c87 50%, #1e40af 100%);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) rotate(0deg);
+      opacity: 0.1;
+    }
+    50% {
+      transform: translateY(-20px) rotate(180deg);
+      opacity: 0.3;
+    }
+  }
+
+  .animate-gradient-shift {
+    animation: gradient-shift 15s ease-in-out infinite;
+  }
+
+  .animate-nap-gradient {
+    animation: nap-gradient 20s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float linear infinite;
   }
 }
