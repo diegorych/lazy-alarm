@@ -1,5 +1,6 @@
 
 import { Button } from '@/components/ui/button';
+import { useState, useEffect } from 'react';
 
 interface NapScreenProps {
   isAlarmRinging: boolean;
@@ -8,9 +9,31 @@ interface NapScreenProps {
 }
 
 const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap }: NapScreenProps) => {
+  const phrases = [
+    "Let the world keep spinning without you",
+    "You're resting. That's enough",
+    "There's nowhere else to be"
+  ];
+
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      
+      setTimeout(() => {
+        setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
+        setIsTransitioning(false);
+      }, 300); // Half of transition duration
+    }, 30000); // Change every 30 seconds
+
+    return () => clearInterval(interval);
+  }, [phrases.length]);
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-8 relative overflow-hidden">
-      {/* New Background Image */}
+    <div className="min-h-screen flex flex-col px-8 relative overflow-hidden">
+      {/* Background Image */}
       <div 
         className="absolute inset-0"
         style={{
@@ -21,26 +44,32 @@ const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap }: NapScreenProps) =
         }}
       />
       
-      {/* Content */}
-      <div className="relative z-10 text-center flex-1 flex flex-col items-center justify-center">
-        {/* Nap Text */}
-        <h1 className="text-3xl md:text-4xl font-light text-white mb-16 leading-relaxed max-w-md">
-          Let the world keep spinning without you
+      {/* Main Content - Centered */}
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
+        {/* Rotating Nap Text */}
+        <h1 
+          className={`text-3xl md:text-4xl font-light text-white leading-relaxed max-w-md transition-opacity duration-600 ${
+            isTransitioning ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          {phrases[currentPhraseIndex]}
         </h1>
 
         {/* Stop Button - Only show when alarm is ringing */}
         {isAlarmRinging && (
-          <Button
-            onClick={onStopAlarm}
-            className="bg-white/90 text-gray-800 px-12 py-4 text-lg font-light rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm animate-pulse"
-          >
-            Stop
-          </Button>
+          <div className="mt-16">
+            <Button
+              onClick={onStopAlarm}
+              className="bg-white/90 text-gray-800 px-12 py-4 text-lg font-light rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm animate-pulse"
+            >
+              Stop
+            </Button>
+          </div>
         )}
       </div>
 
       {/* Stop the nap button at bottom */}
-      <div className="relative z-10 pb-16">
+      <div className="relative z-10 pb-16 flex justify-center">
         <Button
           onClick={onStopNap}
           className="bg-white/20 text-white border border-white/30 px-8 py-3 text-base font-light rounded-full hover:bg-white/30 transition-all duration-300 backdrop-blur-sm"
