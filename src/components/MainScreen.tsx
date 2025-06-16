@@ -1,18 +1,35 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import ManifestoSection from '@/components/ManifestoSection';
+
 interface MainScreenProps {
   onStartNap: () => void;
 }
+
 const MainScreen = ({
   onStartNap
 }: MainScreenProps) => {
   const [scrollY, setScrollY] = useState(0);
+
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrollY(currentScrollY);
+      
+      // Auto-scroll to manifesto section if user scrolls down minimally
+      if (currentScrollY > 50 && currentScrollY < window.innerHeight) {
+        window.scrollTo({
+          top: window.innerHeight,
+          behavior: 'smooth'
+        });
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
   return <div className="relative">
       {/* Main Screen */}
       <div className="min-h-screen flex flex-col px-8 relative">
@@ -52,4 +69,5 @@ const MainScreen = ({
       <ManifestoSection />
     </div>;
 };
+
 export default MainScreen;
