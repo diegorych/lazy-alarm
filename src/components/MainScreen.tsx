@@ -12,6 +12,7 @@ const MainScreen = ({
 }: MainScreenProps) => {
   const [scrollY, setScrollY] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [lastScrollDirection, setLastScrollDirection] = useState<'up' | 'down' | null>(null);
 
   const backgroundImages = [
     '/lovable-uploads/44c9e136-bd41-461d-b9c4-ca14f8efee0f.png',
@@ -22,30 +23,30 @@ const MainScreen = ({
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const scrollDirection = currentScrollY > scrollY ? 'down' : 'up';
+      
       setScrollY(currentScrollY);
+      setLastScrollDirection(scrollDirection);
 
-      // Auto-scroll to manifesto section if user scrolls down minimally
-      if (currentScrollY > 50 && currentScrollY < window.innerHeight / 2) {
+      // Auto-scroll to manifesto section if user scrolls down minimally from the top
+      if (currentScrollY > 50 && currentScrollY < window.innerHeight / 2 && scrollDirection === 'down' && lastScrollDirection !== 'up') {
         window.scrollTo({
           top: window.innerHeight,
           behavior: 'smooth'
         });
       }
       // Auto-scroll back to main screen if user scrolls up from manifesto
-      else if (currentScrollY > window.innerHeight / 2 && currentScrollY < window.innerHeight + 50) {
-        const scrollDirection = currentScrollY - scrollY;
-        if (scrollDirection < 0) { // scrolling up
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-        }
+      else if (currentScrollY > window.innerHeight / 2 && currentScrollY < window.innerHeight + 50 && scrollDirection === 'up') {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [scrollY]);
+  }, [scrollY, lastScrollDirection]);
 
   // Image transition effect
   useEffect(() => {
@@ -78,6 +79,9 @@ const MainScreen = ({
             }}
           />
         ))}
+        
+        {/* Overlay to ensure smooth color transitions */}
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-200/20 to-purple-200/20 opacity-30" />
         
         {/* Logo at top */}
         <div className="pt-16 flex justify-center relative z-10">
