@@ -1,39 +1,83 @@
+
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import ManifestoSection from '@/components/ManifestoSection';
+
 interface MainScreenProps {
   onStartNap: () => void;
 }
+
 const MainScreen = ({
   onStartNap
 }: MainScreenProps) => {
   const [scrollY, setScrollY] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const backgroundImages = [
+    '/lovable-uploads/44c9e136-bd41-461d-b9c4-ca14f8efee0f.png',
+    '/lovable-uploads/62ff2608-7968-40a9-9eeb-d737a47dab8c.png',
+    '/lovable-uploads/d2ff6dff-bb07-40e5-b412-d9241903662b.png'
+  ];
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       setScrollY(currentScrollY);
 
       // Auto-scroll to manifesto section if user scrolls down minimally
-      if (currentScrollY > 50 && currentScrollY < window.innerHeight) {
+      if (currentScrollY > 50 && currentScrollY < window.innerHeight / 2) {
         window.scrollTo({
           top: window.innerHeight,
           behavior: 'smooth'
         });
       }
+      // Auto-scroll back to main screen if user scrolls up from manifesto
+      else if (currentScrollY > window.innerHeight / 2 && currentScrollY < window.innerHeight + 50) {
+        const scrollDirection = currentScrollY - scrollY;
+        if (scrollDirection < 0) { // scrolling up
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        }
+      }
     };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, [scrollY]);
+
+  // Image transition effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        (prevIndex + 1) % backgroundImages.length
+      );
+    }, 2300); // 1500ms transition + 800ms delay
+
+    return () => clearInterval(interval);
   }, []);
-  return <div className="relative">
+
+  return (
+    <div className="relative">
       {/* Main Screen */}
       <div className="min-h-screen flex flex-col px-8 relative">
-        {/* Pink Background */}
-        <div className="absolute inset-0" style={{
-        backgroundImage: `url('/lovable-uploads/44c9e136-bd41-461d-b9c4-ca14f8efee0f.png')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
-      }} />
+        {/* Animated Background Images */}
+        {backgroundImages.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-[1500ms] ease-linear ${
+              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
+            }`}
+            style={{
+              backgroundImage: `url('${image}')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              transitionDelay: index === currentImageIndex ? '800ms' : '0ms'
+            }}
+          />
+        ))}
         
         {/* Logo at top */}
         <div className="pt-16 flex justify-center relative z-10">
@@ -61,6 +105,8 @@ const MainScreen = ({
 
       {/* Manifesto Section */}
       <ManifestoSection />
-    </div>;
+    </div>
+  );
 };
+
 export default MainScreen;
