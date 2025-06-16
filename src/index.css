@@ -106,29 +106,32 @@
 /* Custom animations for Lazy Alarm */
 @layer utilities {
   @keyframes gradient-shift {
-    0%, 100% {
-      background: linear-gradient(135deg, #fce7f3 0%, #fed7aa 50%, #fce7f3 100%);
+    0% {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
     }
     25% {
-      background: linear-gradient(135deg, #fed7aa 0%, #fde68a 50%, #fce7f3 100%);
+      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
     }
     50% {
-      background: linear-gradient(135deg, #fde68a 0%, #fce7f3 50%, #fed7aa 100%);
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #ffecd2 100%);
     }
     75% {
-      background: linear-gradient(135deg, #fce7f3 0%, #fde68a 50%, #fed7aa 100%);
+      background: linear-gradient(135deg, #fecfef 0%, #a8edea 50%, #fcb69f 100%);
+    }
+    100% {
+      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
     }
   }
 
   @keyframes nap-gradient {
     0%, 100% {
-      background: linear-gradient(135deg, #581c87 0%, #7c3aed 50%, #1e3a8a 100%);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
     }
     33% {
-      background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #3730a3 100%);
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 50%, #4facfe 100%);
     }
     66% {
-      background: linear-gradient(135deg, #a855f7 0%, #581c87 50%, #1e40af 100%);
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 50%, #667eea 100%);
     }
   }
 
