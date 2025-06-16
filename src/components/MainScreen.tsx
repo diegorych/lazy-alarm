@@ -11,14 +11,7 @@ const MainScreen = ({
   onStartNap
 }: MainScreenProps) => {
   const [scrollY, setScrollY] = useState(0);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [lastScrollDirection, setLastScrollDirection] = useState<'up' | 'down' | null>(null);
-
-  const backgroundImages = [
-    '/lovable-uploads/44c9e136-bd41-461d-b9c4-ca14f8efee0f.png',
-    '/lovable-uploads/62ff2608-7968-40a9-9eeb-d737a47dab8c.png',
-    '/lovable-uploads/d2ff6dff-bb07-40e5-b412-d9241903662b.png'
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,37 +41,20 @@ const MainScreen = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrollY, lastScrollDirection]);
 
-  // Image transition effect
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
-        (prevIndex + 1) % backgroundImages.length
-      );
-    }, 2300); // 1500ms transition + 800ms delay
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <div className="relative">
       {/* Main Screen */}
       <div className="min-h-screen flex flex-col px-8 relative">
-        {/* Animated Background Images */}
-        {backgroundImages.map((image, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-[1500ms] ease-linear ${
-              index === currentImageIndex ? 'opacity-100' : 'opacity-0'
-            }`}
-            style={{
-              backgroundImage: `url('${image}')`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundRepeat: 'no-repeat',
-              transitionDelay: index === currentImageIndex ? '800ms' : '0ms'
-            }}
-          />
-        ))}
+        {/* Static Background Image */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url('/lovable-uploads/44c9e136-bd41-461d-b9c4-ca14f8efee0f.png')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
         
         {/* Overlay to ensure smooth color transitions */}
         <div className="absolute inset-0 bg-gradient-to-br from-pink-200/20 to-purple-200/20 opacity-30" />
