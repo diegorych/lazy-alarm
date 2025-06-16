@@ -19,36 +19,43 @@ const MainScreen = ({ onStartNap }: MainScreenProps) => {
   return (
     <div className="relative">
       {/* Main Screen */}
-      <div className="min-h-screen flex flex-col items-center justify-center px-8 relative overflow-hidden">
-        {/* Animated Background Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-200 via-orange-200 to-pink-300 animate-gradient-shift" />
+      <div className="min-h-screen flex flex-col items-center justify-center px-8 relative">
+        {/* Pink Background */}
+        <div 
+          className="absolute inset-0" 
+          style={{
+            backgroundImage: `url('/lovable-uploads/44c9e136-bd41-461d-b9c4-ca14f8efee0f.png')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}
+        />
         
-        {/* Face Icon */}
-        <div className="mb-16 w-32 h-32 bg-white/30 rounded-full flex items-center justify-center backdrop-blur-sm shadow-lg">
-          <svg width="60" height="60" viewBox="0 0 100 100" className="text-gray-700">
-            <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="2"/>
-            <circle cx="35" cy="40" r="3" fill="currentColor"/>
-            <circle cx="65" cy="40" r="3" fill="currentColor"/>
-            <path d="M 30 65 Q 50 75 70 65" stroke="currentColor" strokeWidth="2" fill="none"/>
-          </svg>
+        {/* Logo */}
+        <div className="mb-12 relative z-10">
+          <img 
+            src="/lovable-uploads/f9b778ca-c623-432b-bd31-3dab3ea23e93.png" 
+            alt="lazy alarm logo" 
+            className="h-16 w-auto"
+          />
         </div>
 
-        {/* App Title */}
-        <h1 className="text-5xl md:text-6xl font-light text-gray-800 mb-8 tracking-wide text-center">
-          lazy alarm
+        {/* Title */}
+        <h1 className="text-4xl md:text-5xl font-normal text-black mb-12 text-center relative z-10">
+          Take a quick nap
         </h1>
 
         {/* Start Button */}
         <Button
           onClick={onStartNap}
-          className="bg-white/90 text-gray-800 px-16 py-6 text-xl font-light rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm mb-16"
+          className="bg-white/90 text-gray-800 px-16 py-6 text-xl font-light rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm mb-16 relative z-10"
         >
           Start sleeping →
         </Button>
 
         {/* Descriptive Paragraph */}
-        <p className="text-lg font-light text-gray-700 text-center max-w-md leading-relaxed">
-          A gentle excuse to drift off without pressure. No timers, no guilt, no optimization. Just rest when you need it most.
+        <p className="text-lg font-light text-black text-center max-w-lg leading-relaxed relative z-10">
+          A short, no-pressure nap. We won't say how long (something like 20 or 30 minutes), but it's enough to reset without ruining your day.
         </p>
       </div>
 
