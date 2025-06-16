@@ -96,6 +96,11 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     resetAlarm();
   };
 
+  const stopNap = () => {
+    console.log('User stopped nap manually');
+    resetAlarm();
+  };
+
   const resetAlarm = () => {
     setIsNapping(false);
     setIsAlarmRinging(false);
@@ -131,6 +136,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
   return {
     startNap,
     stopAlarm,
+    stopNap,
     isNapping,
     isAlarmRinging,
     timeRemaining

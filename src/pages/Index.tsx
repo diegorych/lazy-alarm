@@ -8,7 +8,7 @@ export type AppState = 'main' | 'napping' | 'alarm-ringing';
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>('main');
-  const { startNap, stopAlarm, isAlarmRinging, timeRemaining } = useAlarmTimer({
+  const { startNap, stopAlarm, stopNap, isAlarmRinging, timeRemaining } = useAlarmTimer({
     onAlarmRing: () => setAppState('alarm-ringing'),
     onAlarmStop: () => setAppState('main')
   });
@@ -23,6 +23,11 @@ const Index = () => {
     setAppState('main');
   };
 
+  const handleStopNap = () => {
+    stopNap();
+    setAppState('main');
+  };
+
   return (
     <div className="min-h-screen w-full overflow-hidden">
       {appState === 'main' && (
@@ -33,6 +38,7 @@ const Index = () => {
         <NapScreen 
           isAlarmRinging={appState === 'alarm-ringing'}
           onStopAlarm={handleStopAlarm}
+          onStopNap={handleStopNap}
         />
       )}
     </div>
