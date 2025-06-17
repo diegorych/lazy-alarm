@@ -41,23 +41,30 @@ const MainScreen = ({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrollY, lastScrollDirection]);
 
+  // Calculate background opacity based on scroll position
+  const backgroundOpacity = Math.max(0, 1 - (scrollY / window.innerHeight));
+
   return (
     <div className="relative">
       {/* Main Screen */}
       <div className="min-h-screen flex flex-col px-8 relative">
-        {/* Static Background Image */}
+        {/* Static Background Image with opacity transition */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 transition-opacity duration-700 ease-out"
           style={{
             backgroundImage: `url('/lovable-uploads/44c9e136-bd41-461d-b9c4-ca14f8efee0f.png')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
+            backgroundRepeat: 'no-repeat',
+            opacity: backgroundOpacity
           }}
         />
         
         {/* Overlay to ensure smooth color transitions */}
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-200/20 to-purple-200/20 opacity-30" />
+        <div 
+          className="absolute inset-0 bg-gradient-to-br from-pink-200/20 to-purple-200/20 transition-opacity duration-700 ease-out" 
+          style={{ opacity: backgroundOpacity * 0.3 }}
+        />
         
         {/* Logo at top */}
         <div className="pt-16 flex justify-center relative z-10">
