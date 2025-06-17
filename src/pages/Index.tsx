@@ -8,71 +8,39 @@ export type AppState = 'main' | 'napping' | 'alarm-ringing';
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>('main');
-  const [isTransitioning, setIsTransitioning] = useState(false);
   const { startNap, stopAlarm, stopNap, isAlarmRinging, timeRemaining } = useAlarmTimer({
     onAlarmRing: () => setAppState('alarm-ringing'),
     onAlarmStop: () => setAppState('main')
   });
 
   const handleStartNap = () => {
-    setIsTransitioning(true);
-    // Wait for fade out to complete before changing state
-    setTimeout(() => {
-      setAppState('napping');
-      startNap();
-      // Give a moment for state change, then fade in
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 100);
-    }, 600); // Match fade out duration
+    setAppState('napping');
+    startNap();
   };
 
   const handleStopAlarm = () => {
-    setIsTransitioning(true);
     stopAlarm();
-    setTimeout(() => {
-      setAppState('main');
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 100);
-    }, 600);
+    setAppState('main');
   };
 
   const handleStopNap = () => {
-    setIsTransitioning(true);
     stopNap();
-    setTimeout(() => {
-      setAppState('main');
-      setTimeout(() => {
-        setIsTransitioning(false);
-      }, 100);
-    }, 600);
+    setAppState('main');
   };
 
   return (
-    <div className="min-h-screen w-full overflow-hidden relative">
-      {/* Main Screen */}
-      <div className={`absolute inset-0 transition-opacity duration-600 ease-out ${
-        appState === 'main' 
-          ? (isTransitioning ? 'opacity-0' : 'opacity-100') 
-          : 'opacity-0 pointer-events-none'
-      }`}>
+    <div className="min-h-screen w-full overflow-hidden">
+      {appState === 'main' && (
         <MainScreen onStartNap={handleStartNap} />
-      </div>
+      )}
       
-      {/* Nap Screen */}
-      <div className={`absolute inset-0 transition-opacity duration-600 ease-out ${
-        (appState === 'napping' || appState === 'alarm-ringing') 
-          ? (isTransitioning ? 'opacity-0' : 'opacity-100') 
-          : 'opacity-0 pointer-events-none'
-      }`}>
+      {(appState === 'napping' || appState === 'alarm-ringing') && (
         <NapScreen 
           isAlarmRinging={appState === 'alarm-ringing'}
           onStopAlarm={handleStopAlarm}
           onStopNap={handleStopNap}
-          isTransitioning={isTransitioning}
         />
-      </div>
+      )}
     </div>
   );
 };

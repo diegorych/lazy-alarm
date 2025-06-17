@@ -6,10 +6,9 @@ interface NapScreenProps {
   isAlarmRinging: boolean;
   onStopAlarm: () => void;
   onStopNap: () => void;
-  isTransitioning: boolean;
 }
 
-const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, isTransitioning }: NapScreenProps) => {
+const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap }: NapScreenProps) => {
   const phrases = [
     "Let the world keep spinning without you",
     "You're resting. That's enough",
@@ -17,15 +16,15 @@ const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, isTransitioning }: 
   ];
 
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const [isPhraseTransitioning, setIsPhraseTransitioning] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsPhraseTransitioning(true);
+      setIsTransitioning(true);
       
       setTimeout(() => {
         setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
-        setIsPhraseTransitioning(false);
+        setIsTransitioning(false);
       }, 300); // Half of transition duration
     }, 30000); // Change every 30 seconds
 
@@ -47,22 +46,18 @@ const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, isTransitioning }: 
       
       {/* Main Content - Centered */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
-        {/* Rotating Nap Text with fade in animation */}
+        {/* Rotating Nap Text */}
         <h1 
           className={`text-3xl md:text-4xl font-light text-white leading-relaxed max-w-md transition-opacity duration-600 ${
-            isPhraseTransitioning ? 'opacity-0' : 'opacity-100'
-          } ${
-            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-          } transition-all duration-600 ease-out delay-300`}
+            isTransitioning ? 'opacity-0' : 'opacity-100'
+          }`}
         >
           {phrases[currentPhraseIndex]}
         </h1>
 
         {/* Stop Button - Only show when alarm is ringing */}
         {isAlarmRinging && (
-          <div className={`mt-16 transition-all duration-600 ease-out delay-500 ${
-            isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-          }`}>
+          <div className="mt-16">
             <Button
               onClick={onStopAlarm}
               className="bg-white/90 text-gray-800 px-12 py-4 text-lg font-light rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm animate-pulse"
@@ -73,10 +68,8 @@ const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, isTransitioning }: 
         )}
       </div>
 
-      {/* Stop the nap button at bottom with fade in animation */}
-      <div className={`relative z-10 pb-16 flex justify-center transition-all duration-600 ease-out delay-700 ${
-        isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
-      }`}>
+      {/* Stop the nap button at bottom */}
+      <div className="relative z-10 pb-16 flex justify-center">
         <Button
           onClick={onStopNap}
           className="bg-white/20 text-white border border-white/30 px-8 py-3 text-base font-light rounded-full hover:bg-white/30 transition-all duration-300 backdrop-blur-sm"
