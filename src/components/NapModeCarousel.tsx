@@ -31,9 +31,9 @@ const NapModeCarousel = ({ onStartNap }: NapModeCarouselProps) => {
         </CarouselItem>
       </CarouselContent>
       
-      {/* Custom navigation arrows */}
-      <CarouselPrevious className="absolute left-8 top-1/2 -translate-y-1/2 h-12 w-12 bg-transparent border-none shadow-none hover:bg-transparent" />
-      <CarouselNext className="absolute right-8 top-1/2 -translate-y-1/2 h-12 w-12 bg-transparent border-none shadow-none hover:bg-transparent" />
+      {/* Custom navigation arrows with white circle background */}
+      <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 h-14 w-14 bg-white/20 border-none shadow-lg hover:bg-white/30 transition-all duration-200 backdrop-blur-sm" />
+      <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 h-14 w-14 bg-white/20 border-none shadow-lg hover:bg-white/30 transition-all duration-200 backdrop-blur-sm" />
     </Carousel>
   );
 };
