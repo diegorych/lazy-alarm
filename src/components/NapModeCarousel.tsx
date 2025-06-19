@@ -38,7 +38,12 @@ const NapModeCarousel = ({ onStartNap }: NapModeCarouselProps) => {
         <img src="/lovable-uploads/f9b778ca-c623-432b-bd31-3dab3ea23e93.png" alt="lazy alarm logo" className="h-16 w-auto" />
       </div>
 
-      <Carousel className="w-full h-screen relative z-10">
+      <Carousel 
+        className="w-full h-screen relative z-10"
+        opts={{
+          loop: true
+        }}
+      >
         <CarouselContent className="h-screen">
           <CarouselItem className="h-screen">
             <TakeANapCard onStartNap={() => onStartNap('quick-nap')} />
@@ -52,8 +57,8 @@ const NapModeCarousel = ({ onStartNap }: NapModeCarouselProps) => {
         </CarouselContent>
         
         {/* Navigation arrows */}
-        <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 h-14 w-14 bg-white/20 border-none shadow-lg hover:bg-white/30 transition-all duration-200 backdrop-blur-sm" />
-        <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 h-14 w-14 bg-white/20 border-none shadow-lg hover:bg-white/30 transition-all duration-200 backdrop-blur-sm" />
+        <CarouselPrevious className="absolute left-8 top-1/2 -translate-y-1/2 h-14 w-14 bg-white/20 border-none shadow-lg hover:bg-white/30 transition-all duration-200 backdrop-blur-sm rounded-full" />
+        <CarouselNext className="absolute right-8 top-1/2 -translate-y-1/2 h-14 w-14 bg-white/20 border-none shadow-lg hover:bg-white/30 transition-all duration-200 backdrop-blur-sm rounded-full" />
       </Carousel>
     </div>
   );

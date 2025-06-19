@@ -7,9 +7,12 @@ interface TakeANapCardProps {
 
 const TakeANapCard = ({ onStartNap }: TakeANapCardProps) => {
   return (
-    <div className="min-h-screen flex flex-col px-8 relative">
-      {/* Animated Center Content */}
-      <div className="flex-1 flex flex-col items-center justify-center relative z-10">
+    <div className="h-screen flex flex-col justify-between px-8 relative">
+      {/* Spacer for top */}
+      <div className="flex-1" />
+      
+      {/* Centered Content */}
+      <div className="flex flex-col items-center justify-center relative z-10">
         <h1 className="text-4xl md:text-5xl font-normal mb-12 text-center text-slate-50 animate-fade-in">
           Take a quick nap
         </h1>
@@ -19,7 +22,7 @@ const TakeANapCard = ({ onStartNap }: TakeANapCardProps) => {
         </Button>
       </div>
 
-      {/* Animated Description at bottom */}
+      {/* Description at bottom */}
       <div className="pb-16 flex justify-center relative z-10">
         <p className="font-light text-black text-center max-w-lg leading-relaxed text-lg animate-fade-in">
           A short, no-pressure nap. We won't say how long (something like 20 or 30 minutes), but it's enough to reset without ruining your day.
