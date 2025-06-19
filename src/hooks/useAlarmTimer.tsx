@@ -50,8 +50,8 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     setIsNapping(true);
     setHasRetried(false);
     
-    // Randomize nap duration between 20-30 minutes (in milliseconds)
-    const napDuration = (20 + Math.random() * 10) * 60 * 1000;
+    // Changed to 1 minute for testing
+    const napDuration = 1 * 60 * 1000; // 1 minute in milliseconds
     setActualDuration(napDuration); // Store the actual duration
     console.log(`Nap duration: ${napDuration / 60000} minutes`);
     
