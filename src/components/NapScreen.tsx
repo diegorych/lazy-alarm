@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import DebugTimer from './DebugTimer';
 
 interface NapScreenProps {
-  isAlarmRinging: boolean;
-  onStopAlarm: () => void;
   onStopNap: () => void;
   napMode?: 'quick-nap' | 'before-dark' | 'if-oversleep';
   startTime?: number;
@@ -14,8 +12,6 @@ interface NapScreenProps {
 }
 
 const NapScreen = ({ 
-  isAlarmRinging, 
-  onStopAlarm, 
   onStopNap, 
   napMode = 'quick-nap', 
   startTime, 
@@ -32,7 +28,7 @@ const NapScreen = ({
   const [isTransitioningPhrase, setIsTransitioningPhrase] = useState(false);
 
   useEffect(() => {
-    if (isTransitioning) return; // Don't start phrase rotation during initial transition
+    if (isTransitioning) return;
     
     const interval = setInterval(() => {
       setIsTransitioningPhrase(true);
@@ -83,18 +79,6 @@ const NapScreen = ({
         >
           {phrases[currentPhraseIndex]}
         </h1>
-
-        {/* Stop Button - Only show when alarm is ringing */}
-        {isAlarmRinging && !isTransitioning && (
-          <div className="mt-16 animate-fade-in">
-            <Button
-              onClick={onStopAlarm}
-              className="bg-white/90 text-gray-800 px-12 py-4 text-lg font-light rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm animate-pulse"
-            >
-              Stop
-            </Button>
-          </div>
-        )}
       </div>
 
       {/* Stop the nap button at bottom */}

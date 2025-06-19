@@ -2,29 +2,30 @@
 import { useState } from 'react';
 import NapModeCarousel, { NapMode } from '@/components/NapModeCarousel';
 import NapScreen from '@/components/NapScreen';
+import WakeUpScreen from '@/components/WakeUpScreen';
 import ManifestoSection from '@/components/ManifestoSection';
 import { useAlarmTimer } from '@/hooks/useAlarmTimer';
 import { useBeforeDarkTimer } from '@/hooks/useBeforeDarkTimer';
 import { useOversleepTimer } from '@/hooks/useOversleepTimer';
 
-export type AppState = 'main' | 'transitioning-to-nap' | 'napping' | 'alarm-ringing';
+export type AppState = 'main' | 'transitioning-to-nap' | 'napping' | 'wake-up-screen' | 'transitioning-to-main';
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>('main');
   const [currentNapMode, setCurrentNapMode] = useState<NapMode>('quick-nap');
 
   const quickNapTimer = useAlarmTimer({
-    onAlarmRing: () => setAppState('alarm-ringing'),
+    onAlarmRing: () => setAppState('wake-up-screen'),
     onAlarmStop: () => setAppState('main')
   });
 
   const beforeDarkTimer = useBeforeDarkTimer({
-    onAlarmRing: () => setAppState('alarm-ringing'),
+    onAlarmRing: () => setAppState('wake-up-screen'),
     onAlarmStop: () => setAppState('main')
   });
 
   const oversleepTimer = useOversleepTimer({
-    onAlarmRing: () => setAppState('alarm-ringing'),
+    onAlarmRing: () => setAppState('wake-up-screen'),
     onAlarmStop: () => setAppState('main')
   });
 
@@ -45,7 +46,6 @@ const Index = () => {
     setCurrentNapMode(mode);
     setAppState('transitioning-to-nap');
     
-    // Start the transition, then begin nap after transition completes
     setTimeout(() => {
       setAppState('napping');
       
@@ -60,12 +60,21 @@ const Index = () => {
           oversleepTimer.startNap();
           break;
       }
-    }, 2000); // Allow time for transition
+    }, 2000);
   };
 
-  const handleStopAlarm = () => {
+  const handleImAwake = () => {
+    setAppState('transitioning-to-main');
     getCurrentTimer().stopAlarm();
-    setAppState('main');
+    
+    setTimeout(() => {
+      setAppState('main');
+    }, 2000);
+  };
+
+  const handleLetMeBe = () => {
+    setAppState('napping');
+    getCurrentTimer().extendNap();
   };
 
   const handleStopNap = () => {
@@ -75,13 +84,15 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full overflow-hidden relative">
-      {/* Main screen - always rendered but with conditional visibility */}
+      {/* Main screen */}
       <div className={`relative ${
         appState === 'main' 
           ? 'animate-fade-in' 
           : appState === 'transitioning-to-nap' 
             ? 'animate-transition-out' 
-            : 'opacity-0 pointer-events-none'
+            : appState === 'transitioning-to-main'
+              ? 'animate-transition-in'
+              : 'opacity-0 pointer-events-none'
       }`}>
         <NapModeCarousel 
           onStartNap={handleStartNap} 
@@ -90,21 +101,34 @@ const Index = () => {
         <ManifestoSection />
       </div>
       
-      {/* Nap screen - show during transition and nap states */}
-      {(appState === 'transitioning-to-nap' || appState === 'napping' || appState === 'alarm-ringing') && (
+      {/* Nap screen */}
+      {(appState === 'transitioning-to-nap' || appState === 'napping') && (
         <div className={`absolute inset-0 ${
           appState === 'transitioning-to-nap' 
             ? 'animate-transition-in' 
             : 'opacity-100'
         }`}>
           <NapScreen 
-            isAlarmRinging={appState === 'alarm-ringing'}
-            onStopAlarm={handleStopAlarm}
             onStopNap={handleStopNap}
             napMode={currentNapMode}
             startTime={getCurrentTimer().startTime}
             actualDuration={getCurrentTimer().actualDuration}
             isTransitioning={appState === 'transitioning-to-nap'}
+          />
+        </div>
+      )}
+
+      {/* Wake up screen */}
+      {(appState === 'wake-up-screen' || appState === 'transitioning-to-main') && (
+        <div className={`absolute inset-0 ${
+          appState === 'wake-up-screen' 
+            ? 'animate-transition-in' 
+            : 'animate-transition-out'
+        }`}>
+          <WakeUpScreen 
+            onImAwake={handleImAwake}
+            onLetMeBe={handleLetMeBe}
+            isTransitioning={appState === 'transitioning-to-main'}
           />
         </div>
       )}

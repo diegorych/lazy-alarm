@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 
 interface UseAlarmTimerProps {
@@ -20,7 +21,6 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
 
   // Initialize alarm sound
   useEffect(() => {
-    // Create a simple tone using Web Audio API for the alarm sound
     const createAlarmSound = () => {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
@@ -29,7 +29,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
       
-      oscillator.frequency.setValueAtTime(440, audioContext.currentTime); // A note
+      oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
       oscillator.type = 'sine';
       
       gainNode.gain.setValueAtTime(0, audioContext.currentTime);
@@ -52,13 +52,13 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     
     // Changed to 1 minute for testing
     const napDuration = 1 * 60 * 1000; // 1 minute in milliseconds
-    setActualDuration(napDuration); // Store the actual duration
+    setActualDuration(napDuration);
     console.log(`Nap duration: ${napDuration / 60000} minutes`);
     
     setTimeRemaining(napDuration);
     
     napTimerRef.current = setTimeout(() => {
-      console.log('Nap time over, ringing alarm...');
+      console.log('Nap time over, showing wake up screen...');
       triggerAlarm();
     }, napDuration);
   };
@@ -67,31 +67,32 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     setIsAlarmRinging(true);
     onAlarmRing();
     
-    // Play alarm sound
     if (audioRef.current) {
       audioRef.current.play();
     }
     
-    // Auto-stop alarm after 30 seconds
+    // Auto-extend after 30 seconds if no response
     alarmTimeoutRef.current = setTimeout(() => {
-      console.log('Alarm auto-stopping...');
-      setIsAlarmRinging(false);
-      
-      // If this is the first time, set retry for 10 minutes later
-      if (!hasRetried) {
-        console.log('Setting retry alarm for 10 minutes...');
-        setHasRetried(true);
-        
-        retryTimeoutRef.current = setTimeout(() => {
-          console.log('Retry alarm ringing...');
-          triggerAlarm();
-        }, 10 * 60 * 1000); // 10 minutes
-      } else {
-        // Second alarm finished, go back to main screen
-        console.log('Second alarm finished, returning to main screen');
-        resetAlarm();
-      }
-    }, 30 * 1000); // 30 seconds
+      console.log('No response, extending nap by 10 minutes...');
+      extendNap();
+    }, 30 * 1000);
+  };
+
+  const extendNap = () => {
+    console.log('Extending nap by 10 minutes...');
+    setIsAlarmRinging(false);
+    
+    // Clear the auto-extend timeout
+    if (alarmTimeoutRef.current) {
+      clearTimeout(alarmTimeoutRef.current);
+      alarmTimeoutRef.current = null;
+    }
+    
+    // Set new timer for 10 minutes
+    napTimerRef.current = setTimeout(() => {
+      console.log('Extended nap time over, showing wake up screen again...');
+      triggerAlarm();
+    }, 10 * 60 * 1000); // 10 minutes
   };
 
   const stopAlarm = () => {
@@ -143,6 +144,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     startNap,
     stopAlarm,
     stopNap: resetAlarm,
+    extendNap,
     isNapping,
     isAlarmRinging,
     timeRemaining,

@@ -16,7 +16,6 @@ const getSunsetTime = async (latitude: number, longitude: number): Promise<Date>
     return new Date(data.results.sunset);
   } catch (error) {
     console.error('Failed to get sunset time:', error);
-    // Fallback: assume sunset at 6 PM
     const fallbackSunset = new Date();
     fallbackSunset.setHours(18, 0, 0, 0);
     return fallbackSunset;
@@ -67,7 +66,6 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     setHasRetried(false);
     
     try {
-      // Get user's location
       const position = await new Promise<GeolocationPosition>((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject, {
           timeout: 10000,
@@ -78,15 +76,14 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
       const { latitude, longitude } = position.coords;
       const sunsetTime = await getSunsetTime(latitude, longitude);
       
-      // Calculate wake-up time (10-15 minutes before sunset)
-      const minutesBeforeSunset = 10 + Math.random() * 5; // Random between 10-15 minutes
+      const minutesBeforeSunset = 10 + Math.random() * 5;
       const wakeUpTime = new Date(sunsetTime.getTime() - minutesBeforeSunset * 60 * 1000);
       const now = new Date();
       
       const napDuration = wakeUpTime.getTime() - now.getTime();
       
       if (napDuration > 0) {
-        setActualDuration(napDuration); // Store the actual calculated duration
+        setActualDuration(napDuration);
         console.log(`Nap duration until sunset: ${napDuration / 60000} minutes`);
         
         napTimerRef.current = setTimeout(() => {
@@ -94,9 +91,8 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
           triggerAlarm();
         }, napDuration);
       } else {
-        // If sunset already passed, set a short nap
         console.log('Sunset already passed, setting short nap');
-        const shortNapDuration = 20 * 60 * 1000; // 20 minutes
+        const shortNapDuration = 20 * 60 * 1000;
         setActualDuration(shortNapDuration);
         napTimerRef.current = setTimeout(() => {
           triggerAlarm();
@@ -105,8 +101,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
       
     } catch (error) {
       console.error('Location or sunset calculation failed:', error);
-      // Fallback to a standard nap duration
-      const fallbackDuration = 30 * 60 * 1000; // 30 minutes
+      const fallbackDuration = 30 * 60 * 1000;
       setActualDuration(fallbackDuration);
       napTimerRef.current = setTimeout(() => {
         triggerAlarm();
@@ -123,22 +118,24 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     }
     
     alarmTimeoutRef.current = setTimeout(() => {
-      console.log('Alarm auto-stopping...');
-      setIsAlarmRinging(false);
-      
-      if (!hasRetried) {
-        console.log('Setting retry alarm for 10 minutes...');
-        setHasRetried(true);
-        
-        retryTimeoutRef.current = setTimeout(() => {
-          console.log('Retry alarm ringing...');
-          triggerAlarm();
-        }, 10 * 60 * 1000);
-      } else {
-        console.log('Second alarm finished, returning to main screen');
-        resetAlarm();
-      }
+      console.log('No response, extending nap by 10 minutes...');
+      extendNap();
     }, 30 * 1000);
+  };
+
+  const extendNap = () => {
+    console.log('Extending nap by 10 minutes...');
+    setIsAlarmRinging(false);
+    
+    if (alarmTimeoutRef.current) {
+      clearTimeout(alarmTimeoutRef.current);
+      alarmTimeoutRef.current = null;
+    }
+    
+    napTimerRef.current = setTimeout(() => {
+      console.log('Extended nap time over, showing wake up screen again...');
+      triggerAlarm();
+    }, 10 * 60 * 1000);
   };
 
   const stopAlarm = () => {
@@ -187,6 +184,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     startNap,
     stopAlarm,
     stopNap: resetAlarm,
+    extendNap,
     isNapping,
     isAlarmRinging,
     startTime,

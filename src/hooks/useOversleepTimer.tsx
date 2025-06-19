@@ -49,9 +49,8 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
     setIsNapping(true);
     setHasRetried(false);
     
-    // Set timer for 2 hours
-    const oversleepDuration = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
-    setActualDuration(oversleepDuration); // Store the actual duration
+    const oversleepDuration = 2 * 60 * 60 * 1000;
+    setActualDuration(oversleepDuration);
     console.log(`Oversleep protection set for: ${oversleepDuration / 3600000} hours`);
     
     napTimerRef.current = setTimeout(() => {
@@ -69,22 +68,24 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
     }
     
     alarmTimeoutRef.current = setTimeout(() => {
-      console.log('Alarm auto-stopping...');
-      setIsAlarmRinging(false);
-      
-      if (!hasRetried) {
-        console.log('Setting retry alarm for 10 minutes...');
-        setHasRetried(true);
-        
-        retryTimeoutRef.current = setTimeout(() => {
-          console.log('Retry alarm ringing...');
-          triggerAlarm();
-        }, 10 * 60 * 1000);
-      } else {
-        console.log('Second alarm finished, returning to main screen');
-        resetAlarm();
-      }
+      console.log('No response, extending nap by 10 minutes...');
+      extendNap();
     }, 30 * 1000);
+  };
+
+  const extendNap = () => {
+    console.log('Extending nap by 10 minutes...');
+    setIsAlarmRinging(false);
+    
+    if (alarmTimeoutRef.current) {
+      clearTimeout(alarmTimeoutRef.current);
+      alarmTimeoutRef.current = null;
+    }
+    
+    napTimerRef.current = setTimeout(() => {
+      console.log('Extended nap time over, showing wake up screen again...');
+      triggerAlarm();
+    }, 10 * 60 * 1000);
   };
 
   const stopAlarm = () => {
@@ -101,7 +102,7 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
   const resetAlarm = () => {
     setIsNapping(false);
     setIsAlarmRinging(false);
-    setHasRetried(false);
+    set​HasRetried(false);
     setStartTime(undefined);
     setActualDuration(undefined);
     
@@ -133,6 +134,7 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
     startNap,
     stopAlarm,
     stopNap: resetAlarm,
+    extendNap,
     isNapping,
     isAlarmRinging,
     startTime,
