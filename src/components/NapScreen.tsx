@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import DebugTimer from './DebugTimer';
@@ -8,10 +9,19 @@ interface NapScreenProps {
   onStopNap: () => void;
   napMode?: 'quick-nap' | 'before-dark' | 'if-oversleep';
   startTime?: number;
-  actualDuration?: number; // Add this prop
+  actualDuration?: number;
+  isTransitioning?: boolean;
 }
 
-const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, napMode = 'quick-nap', startTime, actualDuration }: NapScreenProps) => {
+const NapScreen = ({ 
+  isAlarmRinging, 
+  onStopAlarm, 
+  onStopNap, 
+  napMode = 'quick-nap', 
+  startTime, 
+  actualDuration,
+  isTransitioning = false 
+}: NapScreenProps) => {
   const phrases = [
     "Let the world keep spinning without you",
     "You're resting. That's enough",
@@ -19,34 +29,42 @@ const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, napMode = 'quick-na
   ];
 
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isTransitioningPhrase, setIsTransitioningPhrase] = useState(false);
 
   useEffect(() => {
+    if (isTransitioning) return; // Don't start phrase rotation during initial transition
+    
     const interval = setInterval(() => {
-      setIsTransitioning(true);
+      setIsTransitioningPhrase(true);
       
       setTimeout(() => {
         setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
-        setIsTransitioning(false);
-      }, 300); // Half of transition duration
-    }, 30000); // Change every 30 seconds
+        setIsTransitioningPhrase(false);
+      }, 300);
+    }, 30000);
 
     return () => clearInterval(interval);
-  }, [phrases.length]);
+  }, [phrases.length, isTransitioning]);
 
   return (
-    <div className="min-h-screen flex flex-col px-8 relative overflow-hidden">
+    <div className={`min-h-screen flex flex-col px-8 relative overflow-hidden ${
+      isTransitioning ? 'fixed inset-0 z-50' : ''
+    }`}>
       {/* Debug Timer */}
-      <DebugTimer 
-        isNapping={true}
-        napMode={napMode}
-        startTime={startTime}
-        actualDuration={actualDuration}
-      />
+      {!isTransitioning && (
+        <DebugTimer 
+          isNapping={true}
+          napMode={napMode}
+          startTime={startTime}
+          actualDuration={actualDuration}
+        />
+      )}
 
-      {/* Background Image */}
+      {/* Background Image with transition */}
       <div 
-        className="absolute inset-0"
+        className={`absolute inset-0 transition-opacity duration-1500 ${
+          isTransitioning ? 'opacity-0 animate-fade-in' : 'opacity-100'
+        }`}
         style={{
           backgroundImage: `url('/lovable-uploads/6a346e15-a6cd-4cbb-b120-f11f4fa549cf.png')`,
           backgroundSize: 'cover',
@@ -57,18 +75,25 @@ const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, napMode = 'quick-na
       
       {/* Main Content - Centered */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
-        {/* Rotating Nap Text */}
+        {/* Rotating Nap Text with staggered animation */}
         <h1 
-          className={`text-3xl md:text-4xl font-light text-white leading-relaxed max-w-md transition-opacity duration-600 ${
-            isTransitioning ? 'opacity-0' : 'opacity-100'
+          className={`text-3xl md:text-4xl font-light text-white leading-relaxed max-w-md transition-all duration-1000 ${
+            isTransitioning 
+              ? 'opacity-0 transform translate-y-8 animate-fade-in animation-delay-500' 
+              : isTransitioningPhrase 
+                ? 'opacity-0' 
+                : 'opacity-100'
           }`}
+          style={{
+            animationDelay: isTransitioning ? '500ms' : '0ms'
+          }}
         >
           {phrases[currentPhraseIndex]}
         </h1>
 
         {/* Stop Button - Only show when alarm is ringing */}
-        {isAlarmRinging && (
-          <div className="mt-16">
+        {isAlarmRinging && !isTransitioning && (
+          <div className="mt-16 animate-fade-in">
             <Button
               onClick={onStopAlarm}
               className="bg-white/90 text-gray-800 px-12 py-4 text-lg font-light rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm animate-pulse"
@@ -80,17 +105,21 @@ const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, napMode = 'quick-na
       </div>
 
       {/* Stop the nap button at bottom */}
-      <div className="relative z-10 pb-16 flex justify-center">
-        <Button
-          onClick={onStopNap}
-          className="bg-white/20 text-white border border-white/30 px-8 py-3 text-base font-light rounded-full hover:bg-white/30 transition-all duration-300 backdrop-blur-sm"
-        >
-          Stop the nap
-        </Button>
-      </div>
+      {!isTransitioning && (
+        <div className="relative z-10 pb-16 flex justify-center animate-fade-in animation-delay-700">
+          <Button
+            onClick={onStopNap}
+            className="bg-white/20 text-white border border-white/30 px-8 py-3 text-base font-light rounded-full hover:bg-white/30 transition-all duration-300 backdrop-blur-sm"
+          >
+            Stop the nap
+          </Button>
+        </div>
+      )}
 
       {/* Subtle floating particles effect */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-1000 ${
+        isTransitioning ? 'opacity-0' : 'opacity-100'
+      }`}>
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
