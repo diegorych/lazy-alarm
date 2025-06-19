@@ -8,9 +8,10 @@ interface NapScreenProps {
   onStopNap: () => void;
   napMode?: 'quick-nap' | 'before-dark' | 'if-oversleep';
   startTime?: number;
+  actualDuration?: number; // Add this prop
 }
 
-const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, napMode = 'quick-nap', startTime }: NapScreenProps) => {
+const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, napMode = 'quick-nap', startTime, actualDuration }: NapScreenProps) => {
   const phrases = [
     "Let the world keep spinning without you",
     "You're resting. That's enough",
@@ -40,6 +41,7 @@ const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, napMode = 'quick-na
         isNapping={true}
         napMode={napMode}
         startTime={startTime}
+        actualDuration={actualDuration}
       />
 
       {/* Background Image */}

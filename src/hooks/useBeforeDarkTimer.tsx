@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 
 interface UseBeforeDarkTimerProps {
@@ -27,6 +28,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
   const [isAlarmRinging, setIsAlarmRinging] = useState(false);
   const [hasRetried, setHasRetried] = useState(false);
   const [startTime, setStartTime] = useState<number | undefined>(undefined);
+  const [actualDuration, setActualDuration] = useState<number | undefined>(undefined);
   
   const napTimerRef = useRef<NodeJS.Timeout | null>(null);
   const alarmTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -84,6 +86,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
       const napDuration = wakeUpTime.getTime() - now.getTime();
       
       if (napDuration > 0) {
+        setActualDuration(napDuration); // Store the actual calculated duration
         console.log(`Nap duration until sunset: ${napDuration / 60000} minutes`);
         
         napTimerRef.current = setTimeout(() => {
@@ -94,6 +97,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
         // If sunset already passed, set a short nap
         console.log('Sunset already passed, setting short nap');
         const shortNapDuration = 20 * 60 * 1000; // 20 minutes
+        setActualDuration(shortNapDuration);
         napTimerRef.current = setTimeout(() => {
           triggerAlarm();
         }, shortNapDuration);
@@ -103,6 +107,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
       console.error('Location or sunset calculation failed:', error);
       // Fallback to a standard nap duration
       const fallbackDuration = 30 * 60 * 1000; // 30 minutes
+      setActualDuration(fallbackDuration);
       napTimerRef.current = setTimeout(() => {
         triggerAlarm();
       }, fallbackDuration);
@@ -152,6 +157,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     setIsAlarmRinging(false);
     setHasRetried(false);
     setStartTime(undefined);
+    setActualDuration(undefined);
     
     if (napTimerRef.current) {
       clearTimeout(napTimerRef.current);
@@ -183,6 +189,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     stopNap: resetAlarm,
     isNapping,
     isAlarmRinging,
-    startTime
+    startTime,
+    actualDuration
   };
 };

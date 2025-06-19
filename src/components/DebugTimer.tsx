@@ -5,9 +5,10 @@ interface DebugTimerProps {
   isNapping: boolean;
   napMode: 'quick-nap' | 'before-dark' | 'if-oversleep';
   startTime?: number;
+  actualDuration?: number; // Add this to pass the real duration from hooks
 }
 
-const DebugTimer = ({ isNapping, napMode, startTime }: DebugTimerProps) => {
+const DebugTimer = ({ isNapping, napMode, startTime, actualDuration }: DebugTimerProps) => {
   const [timeRemaining, setTimeRemaining] = useState<string>('');
   const [elapsedTime, setElapsedTime] = useState<string>('');
 
@@ -27,22 +28,22 @@ const DebugTimer = ({ isNapping, napMode, startTime }: DebugTimerProps) => {
       const elapsedSeconds = Math.floor((elapsed % 60000) / 1000);
       setElapsedTime(`${elapsedMinutes}:${elapsedSeconds.toString().padStart(2, '0')}`);
 
-      // Calculate remaining time based on nap mode
-      let totalDuration = 0;
+      // Use actual duration if provided, otherwise fallback to previous logic
+      let totalDuration = actualDuration || 0;
       
-      switch (napMode) {
-        case 'quick-nap':
-          // Random between 20-30 minutes (using average for display)
-          totalDuration = 25 * 60 * 1000;
-          break;
-        case 'before-dark':
-          // For display purposes, show as 60 minutes (actual varies by sunset)
-          totalDuration = 60 * 60 * 1000;
-          break;
-        case 'if-oversleep':
-          // 2 hours
-          totalDuration = 2 * 60 * 60 * 1000;
-          break;
+      if (!actualDuration) {
+        // Fallback logic (shouldn't be used now)
+        switch (napMode) {
+          case 'quick-nap':
+            totalDuration = 25 * 60 * 1000;
+            break;
+          case 'before-dark':
+            totalDuration = 60 * 60 * 1000;
+            break;
+          case 'if-oversleep':
+            totalDuration = 2 * 60 * 60 * 1000;
+            break;
+        }
       }
 
       const remaining = Math.max(0, totalDuration - elapsed);
@@ -66,7 +67,7 @@ const DebugTimer = ({ isNapping, napMode, startTime }: DebugTimerProps) => {
     updateTimer(); // Initial call
 
     return () => clearInterval(interval);
-  }, [isNapping, startTime, napMode]);
+  }, [isNapping, startTime, napMode, actualDuration]);
 
   // Only show in development or when explicitly enabled
   const isDevelopment = process.env.NODE_ENV === 'development';
@@ -81,6 +82,11 @@ const DebugTimer = ({ isNapping, napMode, startTime }: DebugTimerProps) => {
       <div>Mode: {napMode}</div>
       <div>Elapsed: {elapsedTime}</div>
       <div>Remaining: {timeRemaining}</div>
+      {actualDuration && (
+        <div className="text-xs text-gray-400 mt-1">
+          Total: {Math.round(actualDuration / 60000)}min
+        </div>
+      )}
     </div>
   );
 };

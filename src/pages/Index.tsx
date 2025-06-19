@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import NapModeCarousel, { NapMode } from '@/components/NapModeCarousel';
 import NapScreen from '@/components/NapScreen';
@@ -84,6 +83,7 @@ const Index = () => {
           onStopNap={handleStopNap}
           napMode={currentNapMode}
           startTime={getCurrentTimer().startTime}
+          actualDuration={getCurrentTimer().actualDuration}
         />
       )}
     </div>

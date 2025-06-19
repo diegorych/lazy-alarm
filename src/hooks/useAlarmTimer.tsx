@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 
 interface UseAlarmTimerProps {
@@ -12,6 +11,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [hasRetried, setHasRetried] = useState(false);
   const [startTime, setStartTime] = useState<number | undefined>(undefined);
+  const [actualDuration, setActualDuration] = useState<number | undefined>(undefined);
   
   const napTimerRef = useRef<NodeJS.Timeout | null>(null);
   const alarmTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -52,6 +52,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     
     // Randomize nap duration between 20-30 minutes (in milliseconds)
     const napDuration = (20 + Math.random() * 10) * 60 * 1000;
+    setActualDuration(napDuration); // Store the actual duration
     console.log(`Nap duration: ${napDuration / 60000} minutes`);
     
     setTimeRemaining(napDuration);
@@ -110,6 +111,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     setTimeRemaining(0);
     setHasRetried(false);
     setStartTime(undefined);
+    setActualDuration(undefined);
     
     // Clear all timers
     if (napTimerRef.current) {
@@ -144,6 +146,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     isNapping,
     isAlarmRinging,
     timeRemaining,
-    startTime
+    startTime,
+    actualDuration
   };
 };
