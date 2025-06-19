@@ -75,49 +75,38 @@ const Index = () => {
 
   return (
     <div className="min-h-screen w-full overflow-hidden relative">
-      {/* Main screen - only show when not transitioning */}
-      {appState === 'main' && (
-        <div className="relative animate-fade-in">
-          <NapModeCarousel onStartNap={handleStartNap} />
-          <ManifestoSection />
-        </div>
-      )}
-      
-      {/* Transition state - show smooth crossfade */}
-      {appState === 'transitioning-to-nap' && (
-        <div className="relative min-h-screen">
-          {/* Fading out main content */}
-          <div className="absolute inset-0 animate-smooth-fade-out">
-            <NapModeCarousel onStartNap={handleStartNap} />
-            <ManifestoSection />
-          </div>
-          
-          {/* Fading in nap screen */}
-          <div className="absolute inset-0 animate-smooth-fade-in">
-            <NapScreen 
-              isAlarmRinging={false}
-              onStopAlarm={handleStopAlarm}
-              onStopNap={handleStopNap}
-              napMode={currentNapMode}
-              startTime={getCurrentTimer().startTime}
-              actualDuration={getCurrentTimer().actualDuration}
-              isTransitioning={true}
-            />
-          </div>
-        </div>
-      )}
-      
-      {/* Nap and alarm states */}
-      {(appState === 'napping' || appState === 'alarm-ringing') && (
-        <NapScreen 
-          isAlarmRinging={appState === 'alarm-ringing'}
-          onStopAlarm={handleStopAlarm}
-          onStopNap={handleStopNap}
-          napMode={currentNapMode}
-          startTime={getCurrentTimer().startTime}
-          actualDuration={getCurrentTimer().actualDuration}
-          isTransitioning={false}
+      {/* Main screen - always rendered but with conditional visibility */}
+      <div className={`relative ${
+        appState === 'main' 
+          ? 'animate-fade-in' 
+          : appState === 'transitioning-to-nap' 
+            ? 'animate-transition-out' 
+            : 'opacity-0 pointer-events-none'
+      }`}>
+        <NapModeCarousel 
+          onStartNap={handleStartNap} 
+          isTransitioning={appState === 'transitioning-to-nap'} 
         />
+        <ManifestoSection />
+      </div>
+      
+      {/* Nap screen - show during transition and nap states */}
+      {(appState === 'transitioning-to-nap' || appState === 'napping' || appState === 'alarm-ringing') && (
+        <div className={`absolute inset-0 ${
+          appState === 'transitioning-to-nap' 
+            ? 'animate-transition-in' 
+            : 'opacity-100'
+        }`}>
+          <NapScreen 
+            isAlarmRinging={appState === 'alarm-ringing'}
+            onStopAlarm={handleStopAlarm}
+            onStopNap={handleStopNap}
+            napMode={currentNapMode}
+            startTime={getCurrentTimer().startTime}
+            actualDuration={getCurrentTimer().actualDuration}
+            isTransitioning={appState === 'transitioning-to-nap'}
+          />
+        </div>
       )}
     </div>
   );

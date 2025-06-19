@@ -168,25 +168,43 @@
     }
   }
 
-  @keyframes smooth-fade-out {
+  @keyframes transition-out {
     0% {
       opacity: 1;
-      transform: scale(1);
     }
     100% {
       opacity: 0;
-      transform: scale(0.95);
     }
   }
 
-  @keyframes smooth-fade-in {
+  @keyframes transition-in {
     0% {
       opacity: 0;
-      transform: scale(1.05);
     }
     100% {
       opacity: 1;
-      transform: scale(1);
+    }
+  }
+
+  @keyframes text-move-out {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-30px);
+    }
+  }
+
+  @keyframes text-move-in {
+    0% {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 
@@ -210,12 +228,20 @@
     animation: fade-out 1s ease-out forwards;
   }
 
-  .animate-smooth-fade-out {
-    animation: smooth-fade-out 2s ease-out forwards;
+  .animate-transition-out {
+    animation: transition-out 2s ease-out forwards;
   }
 
-  .animate-smooth-fade-in {
-    animation: smooth-fade-in 2s ease-out forwards;
+  .animate-transition-in {
+    animation: transition-in 2s ease-out forwards;
+  }
+
+  .animate-text-move-out {
+    animation: text-move-out 2s ease-out forwards;
+  }
+
+  .animate-text-move-in {
+    animation: text-move-in 2s ease-out forwards;
   }
 
   .animation-delay-500 {
