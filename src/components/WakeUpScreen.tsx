@@ -29,15 +29,7 @@ const WakeUpScreen = ({
       <div className={`relative z-10 pt-16 flex justify-center transition-all duration-1000 ${
         isTransitioning ? 'opacity-0' : 'opacity-100'
       }`}>
-        <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 bg-black rounded-full flex items-center justify-center">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <div className="w-2 h-1 bg-black rounded-full"></div>
-              <div className="w-2 h-1 bg-black rounded-full ml-1"></div>
-            </div>
-          </div>
-          <span className="text-2xl font-normal text-black">lazy alarm</span>
-        </div>
+        <img src="/lovable-uploads/f9b778ca-c623-432b-bd31-3dab3ea23e93.png" alt="lazy alarm logo" className="h-16 w-auto" />
       </div>
 
       {/* Main Content - Centered */}
@@ -54,19 +46,19 @@ const WakeUpScreen = ({
       </div>
 
       {/* Buttons at bottom */}
-      <div className={`relative z-10 pb-16 flex flex-col space-y-4 transition-all duration-1000 ${
+      <div className={`relative z-10 pb-16 flex flex-col space-y-4 items-center transition-all duration-1000 ${
         isTransitioning ? 'opacity-0' : 'opacity-100'
       }`}>
         <Button
           onClick={onImAwake}
-          className="bg-white text-black border border-gray-300 px-12 py-4 text-lg font-normal rounded-full hover:bg-gray-50 transition-all duration-300 shadow-sm"
+          className="bg-white text-black border border-gray-300 px-12 py-4 text-lg font-normal rounded-full hover:bg-gray-50 transition-all duration-300 shadow-sm max-w-[200px] w-full"
         >
           I'm awake
         </Button>
         
         <Button
           onClick={onLetMeBe}
-          className="bg-transparent text-black border border-black px-12 py-4 text-lg font-normal rounded-full hover:bg-black/5 transition-all duration-300"
+          className="bg-transparent text-black border border-black px-12 py-4 text-lg font-normal rounded-full hover:bg-black/5 transition-all duration-300 max-w-[200px] w-full"
         >
           Let me be
         </Button>
