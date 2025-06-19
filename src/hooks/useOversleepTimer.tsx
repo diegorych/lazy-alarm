@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 
 interface UseOversleepTimerProps {
@@ -102,7 +101,7 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
   const resetAlarm = () => {
     setIsNapping(false);
     setIsAlarmRinging(false);
-    set​HasRetried(false);
+    setHasRetried(false);
     setStartTime(undefined);
     setActualDuration(undefined);
     
