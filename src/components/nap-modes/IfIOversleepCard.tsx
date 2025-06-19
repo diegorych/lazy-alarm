@@ -7,12 +7,9 @@ interface IfIOversleepCardProps {
 
 const IfIOversleepCard = ({ onStartNap }: IfIOversleepCardProps) => {
   return (
-    <div className="h-screen flex flex-col justify-between px-8 relative">
-      {/* Spacer for top */}
-      <div className="flex-1" />
-      
+    <div className="h-screen flex flex-col relative">
       {/* Centered Content */}
-      <div className="flex flex-col items-center justify-center relative z-10">
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8">
         <h1 className="text-4xl md:text-5xl font-normal mb-12 text-center text-slate-50 animate-fade-in">
           If I oversleep
         </h1>
@@ -23,7 +20,7 @@ const IfIOversleepCard = ({ onStartNap }: IfIOversleepCardProps) => {
       </div>
 
       {/* Description at bottom */}
-      <div className="pb-16 flex justify-center relative z-10">
+      <div className="pb-16 flex justify-center relative z-10 px-8">
         <p className="font-light text-black text-center max-w-lg leading-relaxed text-lg animate-fade-in">
           Sleep as long as you need. A gentle nudge only if you've been resting for more than 2 hours.
         </p>

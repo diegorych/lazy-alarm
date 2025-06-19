@@ -7,12 +7,9 @@ interface BeforeItGetsDarkCardProps {
 
 const BeforeItGetsDarkCard = ({ onStartNap }: BeforeItGetsDarkCardProps) => {
   return (
-    <div className="h-screen flex flex-col justify-between px-8 relative">
-      {/* Spacer for top */}
-      <div className="flex-1" />
-      
+    <div className="h-screen flex flex-col relative">
       {/* Centered Content */}
-      <div className="flex flex-col items-center justify-center relative z-10">
+      <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8">
         <h1 className="text-4xl md:text-5xl font-normal mb-12 text-center text-slate-50 animate-fade-in">
           Before it gets dark
         </h1>
@@ -23,7 +20,7 @@ const BeforeItGetsDarkCard = ({ onStartNap }: BeforeItGetsDarkCardProps) => {
       </div>
 
       {/* Description at bottom */}
-      <div className="pb-16 flex justify-center relative z-10">
+      <div className="pb-16 flex justify-center relative z-10 px-8">
         <p className="font-light text-black text-center max-w-lg leading-relaxed text-lg animate-fade-in">
           Rest until just before sunset. Wake up refreshed with time to enjoy the golden hour.
         </p>
