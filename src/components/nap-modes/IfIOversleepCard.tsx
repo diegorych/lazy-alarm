@@ -18,17 +18,20 @@ const IfIOversleepCard = ({ onStartNap }: IfIOversleepCardProps) => {
 
       {/* Center block with title and button */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10">
-        <h1 className="text-4xl md:text-5xl font-normal mb-4 text-center text-white">
+        <h1 className="text-4xl md:text-5xl font-normal mb-12 text-center text-white">
           If I oversleep
         </h1>
-        
-        <p className="font-light text-white/90 text-center max-w-lg leading-relaxed text-lg mb-12">
-          Sleep as long as you need. A gentle nudge only if you've been resting for more than 2 hours.
-        </p>
 
         <Button onClick={onStartNap} className="bg-white/90 text-gray-800 px-16 py-6 text-xl font-light rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm">
           Start sleeping →
         </Button>
+      </div>
+
+      {/* Description at bottom */}
+      <div className="pb-16 flex justify-center relative z-10">
+        <p className="font-light text-black text-center max-w-lg leading-relaxed text-lg">
+          Sleep as long as you need. A gentle nudge only if you've been resting for more than 2 hours.
+        </p>
       </div>
     </div>
   );

@@ -29,17 +29,20 @@ const TakeANapCard = ({ onStartNap }: TakeANapCardProps) => {
 
       {/* Center block with title and button */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10">
-        <h1 className="text-4xl md:text-5xl font-normal mb-4 text-center text-slate-50">
+        <h1 className="text-4xl md:text-5xl font-normal mb-12 text-center text-slate-50">
           Take a quick nap
         </h1>
-        
-        <p className="font-light text-white/80 text-center max-w-lg leading-relaxed text-lg mb-12">
-          A short, no-pressure nap. Something like 20 or 30 minutes to reset without ruining your day.
-        </p>
 
         <Button onClick={onStartNap} className="bg-white/90 text-gray-800 px-16 py-6 text-xl font-light rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm">
           Start sleeping →
         </Button>
+      </div>
+
+      {/* Description at bottom */}
+      <div className="pb-16 flex justify-center relative z-10">
+        <p className="font-light text-black text-center max-w-lg leading-relaxed text-lg">
+          A short, no-pressure nap. We won't say how long (something like 20 or 30 minutes), but it's enough to reset without ruining your day.
+        </p>
       </div>
     </div>
   );

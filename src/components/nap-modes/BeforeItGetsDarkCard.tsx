@@ -18,17 +18,20 @@ const BeforeItGetsDarkCard = ({ onStartNap }: BeforeItGetsDarkCardProps) => {
 
       {/* Center block with title and button */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10">
-        <h1 className="text-4xl md:text-5xl font-normal mb-4 text-center text-white">
+        <h1 className="text-4xl md:text-5xl font-normal mb-12 text-center text-white">
           Before it gets dark
         </h1>
-        
-        <p className="font-light text-white/90 text-center max-w-lg leading-relaxed text-lg mb-12">
-          Rest until just before sunset. Wake up refreshed with time to enjoy the golden hour.
-        </p>
 
         <Button onClick={onStartNap} className="bg-white/90 text-gray-800 px-16 py-6 text-xl font-light rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm">
           Start sleeping →
         </Button>
+      </div>
+
+      {/* Description at bottom */}
+      <div className="pb-16 flex justify-center relative z-10">
+        <p className="font-light text-black text-center max-w-lg leading-relaxed text-lg">
+          Rest until just before sunset. Wake up refreshed with time to enjoy the golden hour.
+        </p>
       </div>
     </div>
   );

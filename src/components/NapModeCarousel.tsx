@@ -3,6 +3,8 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
 import TakeANapCard from "./nap-modes/TakeANapCard";
 import BeforeItGetsDarkCard from "./nap-modes/BeforeItGetsDarkCard";
@@ -16,7 +18,7 @@ interface NapModeCarouselProps {
 
 const NapModeCarousel = ({ onStartNap }: NapModeCarouselProps) => {
   return (
-    <Carousel className="w-full h-screen">
+    <Carousel className="w-full h-screen relative">
       <CarouselContent className="h-screen">
         <CarouselItem className="h-screen">
           <TakeANapCard onStartNap={() => onStartNap('quick-nap')} />
@@ -28,6 +30,10 @@ const NapModeCarousel = ({ onStartNap }: NapModeCarouselProps) => {
           <IfIOversleepCard onStartNap={() => onStartNap('if-oversleep')} />
         </CarouselItem>
       </CarouselContent>
+      
+      {/* Custom navigation arrows */}
+      <CarouselPrevious className="absolute left-8 top-1/2 -translate-y-1/2 h-12 w-12 bg-transparent border-none shadow-none hover:bg-transparent" />
+      <CarouselNext className="absolute right-8 top-1/2 -translate-y-1/2 h-12 w-12 bg-transparent border-none shadow-none hover:bg-transparent" />
     </Carousel>
   );
 };
