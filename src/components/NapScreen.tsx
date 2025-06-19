@@ -1,14 +1,16 @@
-
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
+import DebugTimer from './DebugTimer';
 
 interface NapScreenProps {
   isAlarmRinging: boolean;
   onStopAlarm: () => void;
   onStopNap: () => void;
+  napMode?: 'quick-nap' | 'before-dark' | 'if-oversleep';
+  startTime?: number;
 }
 
-const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap }: NapScreenProps) => {
+const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap, napMode = 'quick-nap', startTime }: NapScreenProps) => {
   const phrases = [
     "Let the world keep spinning without you",
     "You're resting. That's enough",
@@ -33,6 +35,13 @@ const NapScreen = ({ isAlarmRinging, onStopAlarm, onStopNap }: NapScreenProps) =
 
   return (
     <div className="min-h-screen flex flex-col px-8 relative overflow-hidden">
+      {/* Debug Timer */}
+      <DebugTimer 
+        isNapping={true}
+        napMode={napMode}
+        startTime={startTime}
+      />
+
       {/* Background Image */}
       <div 
         className="absolute inset-0"

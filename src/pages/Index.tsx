@@ -82,6 +82,8 @@ const Index = () => {
           isAlarmRinging={appState === 'alarm-ringing'}
           onStopAlarm={handleStopAlarm}
           onStopNap={handleStopNap}
+          napMode={currentNapMode}
+          startTime={getCurrentTimer().startTime}
         />
       )}
     </div>

@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 
 interface UseBeforeDarkTimerProps {
@@ -27,6 +26,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
   const [isNapping, setIsNapping] = useState(false);
   const [isAlarmRinging, setIsAlarmRinging] = useState(false);
   const [hasRetried, setHasRetried] = useState(false);
+  const [startTime, setStartTime] = useState<number | undefined>(undefined);
   
   const napTimerRef = useRef<NodeJS.Timeout | null>(null);
   const alarmTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -59,6 +59,8 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
 
   const startNap = async () => {
     console.log('Starting before-dark nap...');
+    const napStartTime = Date.now();
+    setStartTime(napStartTime);
     setIsNapping(true);
     setHasRetried(false);
     
@@ -149,6 +151,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     setIsNapping(false);
     setIsAlarmRinging(false);
     setHasRetried(false);
+    setStartTime(undefined);
     
     if (napTimerRef.current) {
       clearTimeout(napTimerRef.current);
@@ -177,8 +180,9 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
   return {
     startNap,
     stopAlarm,
-    stopNap,
+    stopNap: resetAlarm,
     isNapping,
-    isAlarmRinging
+    isAlarmRinging,
+    startTime
   };
 };

@@ -10,6 +10,7 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
   const [isNapping, setIsNapping] = useState(false);
   const [isAlarmRinging, setIsAlarmRinging] = useState(false);
   const [hasRetried, setHasRetried] = useState(false);
+  const [startTime, setStartTime] = useState<number | undefined>(undefined);
   
   const napTimerRef = useRef<NodeJS.Timeout | null>(null);
   const alarmTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -42,6 +43,8 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
 
   const startNap = () => {
     console.log('Starting oversleep-protection nap...');
+    const napStartTime = Date.now();
+    setStartTime(napStartTime);
     setIsNapping(true);
     setHasRetried(false);
     
@@ -97,6 +100,7 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
     setIsNapping(false);
     setIsAlarmRinging(false);
     setHasRetried(false);
+    setStartTime(undefined);
     
     if (napTimerRef.current) {
       clearTimeout(napTimerRef.current);
@@ -125,8 +129,9 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
   return {
     startNap,
     stopAlarm,
-    stopNap,
+    stopNap: resetAlarm,
     isNapping,
-    isAlarmRinging
+    isAlarmRinging,
+    startTime
   };
 };

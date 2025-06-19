@@ -11,6 +11,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
   const [isAlarmRinging, setIsAlarmRinging] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(0);
   const [hasRetried, setHasRetried] = useState(false);
+  const [startTime, setStartTime] = useState<number | undefined>(undefined);
   
   const napTimerRef = useRef<NodeJS.Timeout | null>(null);
   const alarmTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -44,6 +45,8 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
 
   const startNap = () => {
     console.log('Starting nap...');
+    const napStartTime = Date.now();
+    setStartTime(napStartTime);
     setIsNapping(true);
     setHasRetried(false);
     
@@ -106,6 +109,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     setIsAlarmRinging(false);
     setTimeRemaining(0);
     setHasRetried(false);
+    setStartTime(undefined);
     
     // Clear all timers
     if (napTimerRef.current) {
@@ -136,9 +140,10 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
   return {
     startNap,
     stopAlarm,
-    stopNap,
+    stopNap: resetAlarm,
     isNapping,
     isAlarmRinging,
-    timeRemaining
+    timeRemaining,
+    startTime
   };
 };
