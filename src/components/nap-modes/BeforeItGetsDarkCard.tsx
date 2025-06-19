@@ -8,17 +8,9 @@ interface BeforeItGetsDarkCardProps {
 const BeforeItGetsDarkCard = ({ onStartNap }: BeforeItGetsDarkCardProps) => {
   return (
     <div className="min-h-screen flex flex-col px-8 relative">
-      {/* Fixed Background with sunset gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-300 via-rose-400 to-purple-600" />
-      
-      {/* Fixed Logo at top */}
-      <div className="pt-16 flex justify-center relative z-10">
-        <img src="/lovable-uploads/f9b778ca-c623-432b-bd31-3dab3ea23e93.png" alt="lazy alarm logo" className="h-16 w-auto" />
-      </div>
-
       {/* Animated Center Content */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10">
-        <h1 className="text-4xl md:text-5xl font-normal mb-12 text-center text-white animate-fade-in">
+        <h1 className="text-4xl md:text-5xl font-normal mb-12 text-center text-slate-50 animate-fade-in">
           Before it gets dark
         </h1>
 
