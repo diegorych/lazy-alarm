@@ -1,37 +1,80 @@
 
-import { useState, useEffect } from 'react';
-import MainScreen from '@/components/MainScreen';
+import { useState } from 'react';
+import NapModeCarousel, { NapMode } from '@/components/NapModeCarousel';
 import NapScreen from '@/components/NapScreen';
+import ManifestoSection from '@/components/ManifestoSection';
 import { useAlarmTimer } from '@/hooks/useAlarmTimer';
+import { useBeforeDarkTimer } from '@/hooks/useBeforeDarkTimer';
+import { useOversleepTimer } from '@/hooks/useOversleepTimer';
 
 export type AppState = 'main' | 'napping' | 'alarm-ringing';
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>('main');
-  const { startNap, stopAlarm, stopNap, isAlarmRinging, timeRemaining } = useAlarmTimer({
+  const [currentNapMode, setCurrentNapMode] = useState<NapMode>('quick-nap');
+
+  const quickNapTimer = useAlarmTimer({
     onAlarmRing: () => setAppState('alarm-ringing'),
     onAlarmStop: () => setAppState('main')
   });
 
-  const handleStartNap = () => {
+  const beforeDarkTimer = useBeforeDarkTimer({
+    onAlarmRing: () => setAppState('alarm-ringing'),
+    onAlarmStop: () => setAppState('main')
+  });
+
+  const oversleepTimer = useOversleepTimer({
+    onAlarmRing: () => setAppState('alarm-ringing'),
+    onAlarmStop: () => setAppState('main')
+  });
+
+  const getCurrentTimer = () => {
+    switch (currentNapMode) {
+      case 'quick-nap':
+        return quickNapTimer;
+      case 'before-dark':
+        return beforeDarkTimer;
+      case 'if-oversleep':
+        return oversleepTimer;
+      default:
+        return quickNapTimer;
+    }
+  };
+
+  const handleStartNap = (mode: NapMode) => {
+    setCurrentNapMode(mode);
     setAppState('napping');
-    startNap();
+    
+    switch (mode) {
+      case 'quick-nap':
+        quickNapTimer.startNap();
+        break;
+      case 'before-dark':
+        beforeDarkTimer.startNap();
+        break;
+      case 'if-oversleep':
+        oversleepTimer.startNap();
+        break;
+    }
   };
 
   const handleStopAlarm = () => {
-    stopAlarm();
+    getCurrentTimer().stopAlarm();
     setAppState('main');
   };
 
   const handleStopNap = () => {
-    stopNap();
+    getCurrentTimer().stopNap();
     setAppState('main');
   };
 
   return (
     <div className="min-h-screen w-full overflow-hidden">
       {appState === 'main' && (
-        <MainScreen onStartNap={handleStartNap} />
+        <div className="relative">
+          <NapModeCarousel onStartNap={handleStartNap} />
+          <ManifestoSection />
+        </div>
       )}
       
       {(appState === 'napping' || appState === 'alarm-ringing') && (
