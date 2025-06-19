@@ -11,6 +11,7 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
   const [isAlarmRinging, setIsAlarmRinging] = useState(false);
   const [hasRetried, setHasRetried] = useState(false);
   const [startTime, setStartTime] = useState<number | undefined>(undefined);
+  const [actualDuration, setActualDuration] = useState<number | undefined>(undefined);
   
   const napTimerRef = useRef<NodeJS.Timeout | null>(null);
   const alarmTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -50,6 +51,7 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
     
     // Set timer for 2 hours
     const oversleepDuration = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+    setActualDuration(oversleepDuration); // Store the actual duration
     console.log(`Oversleep protection set for: ${oversleepDuration / 3600000} hours`);
     
     napTimerRef.current = setTimeout(() => {
@@ -101,6 +103,7 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
     setIsAlarmRinging(false);
     setHasRetried(false);
     setStartTime(undefined);
+    setActualDuration(undefined);
     
     if (napTimerRef.current) {
       clearTimeout(napTimerRef.current);
@@ -132,6 +135,7 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
     stopNap: resetAlarm,
     isNapping,
     isAlarmRinging,
-    startTime
+    startTime,
+    actualDuration
   };
 };
