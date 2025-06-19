@@ -47,9 +47,7 @@ const NapScreen = ({
   }, [phrases.length, isTransitioning]);
 
   return (
-    <div className={`min-h-screen flex flex-col px-8 relative overflow-hidden ${
-      isTransitioning ? 'fixed inset-0 z-50' : ''
-    }`}>
+    <div className="min-h-screen flex flex-col px-8 relative overflow-hidden">
       {/* Debug Timer */}
       {!isTransitioning && (
         <DebugTimer 
@@ -60,11 +58,9 @@ const NapScreen = ({
         />
       )}
 
-      {/* Background Image with transition */}
+      {/* Background Image */}
       <div 
-        className={`absolute inset-0 transition-opacity duration-1500 ${
-          isTransitioning ? 'opacity-0 animate-fade-in' : 'opacity-100'
-        }`}
+        className="absolute inset-0"
         style={{
           backgroundImage: `url('/lovable-uploads/6a346e15-a6cd-4cbb-b120-f11f4fa549cf.png')`,
           backgroundSize: 'cover',
@@ -75,18 +71,15 @@ const NapScreen = ({
       
       {/* Main Content - Centered */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
-        {/* Rotating Nap Text with staggered animation */}
+        {/* Rotating Nap Text */}
         <h1 
           className={`text-3xl md:text-4xl font-light text-white leading-relaxed max-w-md transition-all duration-1000 ${
             isTransitioning 
-              ? 'opacity-0 transform translate-y-8 animate-fade-in animation-delay-500' 
+              ? 'opacity-0 transform translate-y-8' 
               : isTransitioningPhrase 
                 ? 'opacity-0' 
                 : 'opacity-100'
           }`}
-          style={{
-            animationDelay: isTransitioning ? '500ms' : '0ms'
-          }}
         >
           {phrases[currentPhraseIndex]}
         </h1>
@@ -106,7 +99,7 @@ const NapScreen = ({
 
       {/* Stop the nap button at bottom */}
       {!isTransitioning && (
-        <div className="relative z-10 pb-16 flex justify-center animate-fade-in animation-delay-700">
+        <div className="relative z-10 pb-16 flex justify-center">
           <Button
             onClick={onStopNap}
             className="bg-white/20 text-white border border-white/30 px-8 py-3 text-base font-light rounded-full hover:bg-white/30 transition-all duration-300 backdrop-blur-sm"
@@ -117,9 +110,7 @@ const NapScreen = ({
       )}
 
       {/* Subtle floating particles effect */}
-      <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-opacity duration-1000 ${
-        isTransitioning ? 'opacity-0' : 'opacity-100'
-      }`}>
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {[...Array(20)].map((_, i) => (
           <div
             key={i}
