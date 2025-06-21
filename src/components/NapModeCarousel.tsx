@@ -50,27 +50,17 @@ const NapModeCarousel = ({ onStartNap, isTransitioning = false }: NapModeCarouse
 
   return (
     <div className="min-h-screen flex flex-col px-8 relative">
-      {/* Video Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ease-out"
-        style={{ opacity: backgroundOpacity }}
-      >
-        <source src="/path-to-your-video.mp4" type="video/mp4" />
-        {/* Fallback to image if video doesn't load */}
-        <div
-          className="absolute inset-0 w-full h-full"
-          style={{
-            backgroundImage: `url('/lovable-uploads/44c9e136-bd41-461d-b9c4-ca14f8efee0f.png')`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
-        />
-      </video>
+      {/* Static Background Image with opacity transition */}
+      <div
+        className="absolute inset-0 transition-opacity duration-700 ease-out"
+        style={{
+          backgroundImage: `url('/lovable-uploads/44c9e136-bd41-461d-b9c4-ca14f8efee0f.png')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: backgroundOpacity
+        }}
+      />
       
       {/* Overlay to ensure smooth color transitions */}
       <div 
