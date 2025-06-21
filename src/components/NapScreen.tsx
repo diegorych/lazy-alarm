@@ -44,6 +44,13 @@ const NapScreen = ({
 
   return (
     <div className="min-h-screen flex flex-col px-8 relative overflow-hidden">
+      {/* Animated Liquid Gradient Background for Nap */}
+      <div className="nap-liquid-gradient-container">
+        <div className="nap-liquid-gradient-bg">
+          <div className="nap-gradient-blob nap-blob-single"></div>
+        </div>
+      </div>
+
       {/* Debug Timer */}
       {!isTransitioning && (
         <DebugTimer 
@@ -54,9 +61,9 @@ const NapScreen = ({
         />
       )}
 
-      {/* Background Image */}
+      {/* Background Image - now with lower opacity to blend with animated background */}
       <div 
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-30"
         style={{
           backgroundImage: `url('/lovable-uploads/6a346e15-a6cd-4cbb-b120-f11f4fa549cf.png')`,
           backgroundSize: 'cover',
