@@ -1,10 +1,8 @@
-
 import { useState } from 'react';
 import NapModeCarousel, { NapMode } from '@/components/NapModeCarousel';
 import NapScreen from '@/components/NapScreen';
 import WakeUpScreen from '@/components/WakeUpScreen';
 import ManifestoSection from '@/components/ManifestoSection';
-import LiquidGradientSection from '@/components/LiquidGradientSection';
 import { useAlarmTimer } from '@/hooks/useAlarmTimer';
 import { useBeforeDarkTimer } from '@/hooks/useBeforeDarkTimer';
 import { useOversleepTimer } from '@/hooks/useOversleepTimer';
@@ -100,7 +98,6 @@ const Index = () => {
           isTransitioning={appState === 'transitioning-to-nap'} 
         />
         <ManifestoSection />
-        <LiquidGradientSection />
       </div>
       
       {/* Nap screen */}
