@@ -29,9 +29,9 @@ const BeforeItGetsDarkCard = ({ onStartNap, isTransitioning = false }: BeforeItG
 
       {/* Description at bottom */}
       <div className="pb-16 flex justify-center relative z-10 px-8">
-        <p className={`font-light text-black text-center max-w-lg leading-relaxed text-lg ${
+        <p className={`font-light text-black text-center max-w-lg leading-relaxed ${
           isTransitioning ? 'animate-text-move-out' : 'animate-fade-in'
-        }`}>
+        }`} style={{ fontSize: '14px' }}>
           Rest until just before sunset. Wake up refreshed with time to enjoy the golden hour.
         </p>
       </div>

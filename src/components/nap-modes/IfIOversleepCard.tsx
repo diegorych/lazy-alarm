@@ -29,9 +29,9 @@ const IfIOversleepCard = ({ onStartNap, isTransitioning = false }: IfIOversleepC
 
       {/* Description at bottom */}
       <div className="pb-16 flex justify-center relative z-10 px-8">
-        <p className={`font-light text-black text-center max-w-lg leading-relaxed text-lg ${
+        <p className={`font-light text-black text-center max-w-lg leading-relaxed ${
           isTransitioning ? 'animate-text-move-out' : 'animate-fade-in'
-        }`}>
+        }`} style={{ fontSize: '14px' }}>
           Sleep as long as you need. A gentle nudge only if you've been resting for more than 2 hours.
         </p>
       </div>
