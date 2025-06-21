@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -104,24 +105,6 @@
 
 /* Custom animations for Lazy Alarm */
 @layer utilities {
-  @keyframes gradient-shift {
-    0% {
-      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-    }
-    25% {
-      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 50%, #ff9a9e 100%);
-    }
-    50% {
-      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #ffecd2 100%);
-    }
-    75% {
-      background: linear-gradient(135deg, #fecfef 0%, #a8edea 50%, #fcb69f 100%);
-    }
-    100% {
-      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
-    }
-  }
-
   @keyframes nap-gradient {
     0%, 100% {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #667eea 100%);
@@ -207,7 +190,7 @@
     }
   }
 
-  /* Single Liquid Blob Animation */
+  /* Single Liquid Blob Animation - Fixed colors */
   @keyframes liquid-morph-single {
     0%, 100% {
       transform: translate(-50%, -50%) scale(1) rotate(0deg);
@@ -225,10 +208,6 @@
       transform: translate(-40%, -70%) scale(1.2) rotate(270deg);
       border-radius: 70% 50% 40% 30% / 40% 50% 70% 30%;
     }
-  }
-
-  .animate-gradient-shift {
-    animation: gradient-shift 15s ease-in-out infinite;
   }
 
   .animate-nap-gradient {
@@ -271,7 +250,7 @@
     animation-delay: 700ms;
   }
 
-  /* Liquid Gradient Styles */
+  /* Liquid Gradient Styles - Fixed colors */
   .liquid-gradient-container {
     position: absolute;
     top: 0;
@@ -289,8 +268,6 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(45deg, #FFA369, #FFC8C9, #FEE6D7);
-    background-size: 300% 300%;
-    animation: gradient-shift 20s ease-in-out infinite;
   }
 
   .gradient-blob {
