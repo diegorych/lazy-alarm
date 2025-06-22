@@ -31,7 +31,7 @@ const ManifestoSection = () => {
       id="manifesto-section"
       className="min-h-screen flex flex-col items-center justify-center px-8 bg-gradient-to-br from-gray-50 to-white"
     >
-      {/* Image at top */}
+      {/* Title */}
       <div 
         className={`mb-12 transition-all duration-1000 ease-out ${
           isVisible 
@@ -40,17 +40,15 @@ const ManifestoSection = () => {
         }`}
         style={{ transitionDelay: '200ms' }}
       >
-        <img 
-          src="/lovable-uploads/e1ec9ee1-b665-4003-b0fd-8b3e0aa2e31f.png" 
-          alt="Person resting" 
-          className="w-auto h-32 object-contain"
-        />
+        <h2 className="text-3xl md:text-4xl font-normal text-center" style={{ color: '#080908' }}>
+          THIS ISN'T AN ALARM
+        </h2>
       </div>
       
-      {/* Text content */}
-      <div className="max-w-2xl text-center space-y-6">
+      {/* Text content - left aligned */}
+      <div className="max-w-2xl w-full space-y-6">
         <p 
-          className={`text-base font-normal leading-relaxed transition-all duration-1000 ease-out ${
+          className={`text-base font-normal leading-relaxed text-left transition-all duration-1000 ease-out ${
             isVisible 
               ? 'opacity-100 translate-y-0' 
               : 'opacity-0 translate-y-8'
@@ -64,7 +62,7 @@ const ManifestoSection = () => {
         </p>
         
         <p 
-          className={`text-base font-normal leading-relaxed transition-all duration-1000 ease-out ${
+          className={`text-base font-normal leading-relaxed text-left transition-all duration-1000 ease-out ${
             isVisible 
               ? 'opacity-100 translate-y-0' 
               : 'opacity-0 translate-y-8'
@@ -78,7 +76,7 @@ const ManifestoSection = () => {
         </p>
         
         <p 
-          className={`text-base font-normal leading-relaxed transition-all duration-1000 ease-out ${
+          className={`text-base font-normal leading-relaxed text-left transition-all duration-1000 ease-out ${
             isVisible 
               ? 'opacity-100 translate-y-0' 
               : 'opacity-0 translate-y-8'
@@ -90,6 +88,22 @@ const ManifestoSection = () => {
         >
           You won't see a countdown. You won't be told how long you've slept. When it's time to wake up, we'll whisper — and if you don't feel like it, we'll go quiet and try again later. No pressure. No noise. Just a soft little pocket of time that belongs only to you.
         </p>
+      </div>
+
+      {/* Image at bottom */}
+      <div 
+        className={`mt-12 transition-all duration-1000 ease-out ${
+          isVisible 
+            ? 'opacity-100 translate-y-0' 
+            : 'opacity-0 translate-y-8'
+        }`}
+        style={{ transitionDelay: '1000ms' }}
+      >
+        <img 
+          src="/lovable-uploads/e1ec9ee1-b665-4003-b0fd-8b3e0aa2e31f.png" 
+          alt="Person resting" 
+          className="w-auto h-32 object-contain"
+        />
       </div>
     </div>
   );
