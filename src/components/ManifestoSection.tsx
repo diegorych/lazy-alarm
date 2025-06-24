@@ -40,7 +40,7 @@ const ManifestoSection = () => {
         }`}
         style={{ transitionDelay: '200ms' }}
       >
-        <h2 className="text-3xl md:text-4xl font-normal text-center" style={{ color: '#080908' }}>
+        <h2 className="text-2xl md:text-2xl font-normal text-center" style={{ color: '#080908' }}>
           THIS ISN'T AN ALARM
         </h2>
       </div>
