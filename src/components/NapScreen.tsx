@@ -9,6 +9,7 @@ interface NapScreenProps {
   startTime?: number;
   actualDuration?: number;
   isTransitioning?: boolean;
+  onTestWakeUp?: () => void; // New prop for test button
 }
 
 const NapScreen = ({ 
@@ -16,7 +17,8 @@ const NapScreen = ({
   napMode = 'quick-nap', 
   startTime, 
   actualDuration,
-  isTransitioning = false 
+  isTransitioning = false,
+  onTestWakeUp
 }: NapScreenProps) => {
   const phrases = [
     "Let the world keep spinning without you",
@@ -61,6 +63,18 @@ const NapScreen = ({
         />
       )}
 
+      {/* Test Button - only in development */}
+      {!isTransitioning && process.env.NODE_ENV === 'development' && onTestWakeUp && (
+        <div className="absolute top-4 right-4 z-50">
+          <Button
+            onClick={onTestWakeUp}
+            className="bg-red-500/80 text-white px-4 py-2 text-sm rounded hover:bg-red-600/80 transition-all duration-300 backdrop-blur-sm"
+          >
+            Test Wake Up
+          </Button>
+        </div>
+      )}
+
       {/* Background Image - now with lower opacity to blend with animated background */}
       <div 
         className="absolute inset-0 opacity-30"
@@ -76,24 +90,24 @@ const NapScreen = ({
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
         {/* Rotating Nap Text */}
         <h1 
-          className={`text-3xl md:text-4xl font-light text-white leading-relaxed max-w-md transition-all duration-1000 ${
+          className={`text-3xl md:text-4xl font-light text-white leading-relaxed max-w-md transition-opacity duration-1000 ${
             isTransitioning 
               ? 'opacity-0' 
               : isTransitioningPhrase 
                 ? 'opacity-0' 
-                : 'opacity-100 animate-fade-in'
+                : 'opacity-100'
           }`}
         >
           {phrases[currentPhraseIndex]}
         </h1>
       </div>
 
-      {/* Stop the nap button at bottom */}
+      {/* I'm awake button at bottom */}
       {!isTransitioning && (
         <div className="relative z-10 pb-16 flex justify-center">
           <Button
             onClick={onStopNap}
-            className="bg-white/20 text-white border border-white/30 px-8 py-3 text-base font-light rounded-full hover:bg-white/30 transition-all duration-300 backdrop-blur-sm animate-fade-in"
+            className="bg-white/20 text-white border border-white/30 px-8 py-3 text-base font-light rounded-full hover:bg-white/30 transition-all duration-300 backdrop-blur-sm opacity-100"
           >
             I'm awake
           </Button>

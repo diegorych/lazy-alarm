@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import NapModeCarousel, { NapMode } from '@/components/NapModeCarousel';
 import NapScreen from '@/components/NapScreen';
@@ -81,6 +82,10 @@ const Index = () => {
     setAppState('main');
   };
 
+  const handleTestWakeUp = () => {
+    setAppState('wake-up-screen');
+  };
+
   return (
     <div className="min-h-screen w-full overflow-hidden relative">
       {/* Main screen */}
@@ -113,6 +118,7 @@ const Index = () => {
             startTime={getCurrentTimer().startTime}
             actualDuration={getCurrentTimer().actualDuration}
             isTransitioning={appState === 'transitioning-to-nap'}
+            onTestWakeUp={handleTestWakeUp}
           />
         </div>
       )}
