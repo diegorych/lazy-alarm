@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import NapModeCarousel, { NapMode } from '@/components/NapModeCarousel';
 import NapScreen from '@/components/NapScreen';
@@ -83,6 +82,13 @@ const Index = () => {
   };
 
   const handleTestWakeUp = () => {
+    console.log('Test wake up button pressed');
+    // Trigger the alarm sound before showing wake up screen
+    const currentTimer = getCurrentTimer();
+    if (currentTimer.triggerAlarm) {
+      console.log('Calling triggerAlarm for test');
+      currentTimer.triggerAlarm();
+    }
     setAppState('wake-up-screen');
   };
 
