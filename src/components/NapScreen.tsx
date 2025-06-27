@@ -63,8 +63,8 @@ const NapScreen = ({
         />
       )}
 
-      {/* Test Button - only in development */}
-      {!isTransitioning && process.env.NODE_ENV === 'development' && onTestWakeUp && (
+      {/* Test Button - now visible on mobile and development */}
+      {!isTransitioning && onTestWakeUp && (
         <div className="absolute top-4 right-4 z-50">
           <Button
             onClick={onTestWakeUp}
