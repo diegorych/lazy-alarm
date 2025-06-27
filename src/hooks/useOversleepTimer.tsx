@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 
 interface UseOversleepTimerProps {
@@ -17,28 +18,44 @@ export const useOversleepTimer = ({ onAlarmRing, onAlarmStop }: UseOversleepTime
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Initialize alarm sound
+  // Initialize pleasant alarm sound
   useEffect(() => {
-    const createAlarmSound = () => {
+    const createPleasantAlarm = () => {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
       
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+      // Create a pleasant melodic sequence
+      const playNote = (frequency: number, startTime: number, duration: number) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+        oscillator.type = 'sine';
+        
+        // Gentle fade in and out
+        gainNode.gain.setValueAtTime(0, startTime);
+        gainNode.gain.linearRampToValueAtTime(0.2, startTime + 0.1);
+        gainNode.gain.linearRampToValueAtTime(0.15, startTime + duration - 0.1);
+        gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
+        
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      };
       
-      oscillator.frequency.setValueAtTime(440, audioContext.currentTime);
-      oscillator.type = 'sine';
+      // Pleasant melody - C major chord progression
+      const now = audioContext.currentTime;
+      const noteDuration = 0.8;
       
-      gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-      gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.1);
-      gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 2);
-      
-      oscillator.start(audioContext.currentTime);
-      oscillator.stop(audioContext.currentTime + 2);
+      // Play a gentle ascending melody
+      playNote(523.25, now, noteDuration); // C5
+      playNote(659.25, now + 0.4, noteDuration); // E5
+      playNote(783.99, now + 0.8, noteDuration); // G5
+      playNote(1046.50, now + 1.2, noteDuration * 1.5); // C6 - longer final note
     };
 
-    audioRef.current = { play: createAlarmSound } as any;
+    audioRef.current = { play: createPleasantAlarm } as any;
   }, []);
 
   const startNap = () => {
