@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 
 interface UseBeforeDarkTimerProps {
@@ -36,38 +37,46 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
   // Initialize pleasant alarm sound
   useEffect(() => {
     const createPleasantAlarm = () => {
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-      
-      // Create a pleasant melodic sequence
-      const playNote = (frequency: number, startTime: number, duration: number) => {
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
+      console.log('Creating pleasant alarm sound...');
+      try {
+        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
         
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
+        // Create a pleasant melodic sequence
+        const playNote = (frequency: number, startTime: number, duration: number) => {
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
+          
+          oscillator.connect(gainNode);
+          gainNode.connect(audioContext.destination);
+          
+          oscillator.frequency.setValueAtTime(frequency, startTime);
+          oscillator.type = 'sine';
+          
+          // Gentle fade in and out
+          gainNode.gain.setValueAtTime(0, startTime);
+          gainNode.gain.linearRampToValueAtTime(0.2, startTime + 0.1);
+          gainNode.gain.linearRampToValueAtTime(0.15, startTime + duration - 0.1);
+          gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
+          
+          oscillator.start(startTime);
+          oscillator.stop(startTime + duration);
+        };
         
-        oscillator.frequency.setValueAtTime(frequency, startTime);
-        oscillator.type = 'sine';
+        // Pleasant melody - C major chord progression
+        const now = audioContext.currentTime;
+        const noteDuration = 0.8;
         
-        // Gentle fade in and out
-        gainNode.gain.setValueAtTime(0, startTime);
-        gainNode.gain.linearRampToValueAtTime(0.2, startTime + 0.1);
-        gainNode.gain.linearRampToValueAtTime(0.15, startTime + duration - 0.1);
-        gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
+        console.log('Playing alarm melody...');
+        // Play a gentle ascending melody
+        playNote(523.25, now, noteDuration); // C5
+        playNote(659.25, now + 0.4, noteDuration); // E5
+        playNote(783.99, now + 0.8, noteDuration); // G5
+        playNote(1046.50, now + 1.2, noteDuration * 1.5); // C6 - longer final note
         
-        oscillator.start(startTime);
-        oscillator.stop(startTime + duration);
-      };
-      
-      // Pleasant melody - C major chord progression
-      const now = audioContext.currentTime;
-      const noteDuration = 0.8;
-      
-      // Play a gentle ascending melody
-      playNote(523.25, now, noteDuration); // C5
-      playNote(659.25, now + 0.4, noteDuration); // E5
-      playNote(783.99, now + 0.8, noteDuration); // G5
-      playNote(1046.50, now + 1.2, noteDuration * 1.5); // C6 - longer final note
+        console.log('Alarm sound should be playing now');
+      } catch (error) {
+        console.error('Error creating alarm sound:', error);
+      }
     };
 
     audioRef.current = { play: createPleasantAlarm } as any;
@@ -125,11 +134,15 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
   };
 
   const triggerAlarm = () => {
+    console.log('triggerAlarm called - setting alarm ringing state and playing sound');
     setIsAlarmRinging(true);
     onAlarmRing();
     
     if (audioRef.current) {
+      console.log('Playing alarm sound...');
       audioRef.current.play();
+    } else {
+      console.error('Audio ref is null, cannot play alarm sound');
     }
     
     alarmTimeoutRef.current = setTimeout(() => {
@@ -200,6 +213,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     stopAlarm,
     stopNap: resetAlarm,
     extendNap,
+    triggerAlarm, // Add triggerAlarm to the return object
     isNapping,
     isAlarmRinging,
     startTime,
