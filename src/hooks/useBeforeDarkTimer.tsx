@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 
 interface UseBeforeDarkTimerProps {
@@ -32,55 +31,93 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
   const napTimerRef = useRef<NodeJS.Timeout | null>(null);
   const alarmTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const alarmIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Initialize pleasant alarm sound
+  // Initialize audio context
   useEffect(() => {
-    const createPleasantAlarm = () => {
-      console.log('Creating pleasant alarm sound...');
-      try {
-        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-        
-        // Create a pleasant melodic sequence
-        const playNote = (frequency: number, startTime: number, duration: number) => {
-          const oscillator = audioContext.createOscillator();
-          const gainNode = audioContext.createGain();
-          
-          oscillator.connect(gainNode);
-          gainNode.connect(audioContext.destination);
-          
-          oscillator.frequency.setValueAtTime(frequency, startTime);
-          oscillator.type = 'sine';
-          
-          // Gentle fade in and out
-          gainNode.gain.setValueAtTime(0, startTime);
-          gainNode.gain.linearRampToValueAtTime(0.2, startTime + 0.1);
-          gainNode.gain.linearRampToValueAtTime(0.15, startTime + duration - 0.1);
-          gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
-          
-          oscillator.start(startTime);
-          oscillator.stop(startTime + duration);
-        };
-        
-        // Pleasant melody - C major chord progression
-        const now = audioContext.currentTime;
-        const noteDuration = 0.8;
-        
-        console.log('Playing alarm melody...');
-        // Play a gentle ascending melody
-        playNote(523.25, now, noteDuration); // C5
-        playNote(659.25, now + 0.4, noteDuration); // E5
-        playNote(783.99, now + 0.8, noteDuration); // G5
-        playNote(1046.50, now + 1.2, noteDuration * 1.5); // C6 - longer final note
-        
-        console.log('Alarm sound should be playing now');
-      } catch (error) {
-        console.error('Error creating alarm sound:', error);
+    return () => {
+      // Cleanup audio context on unmount
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
+      if (alarmIntervalRef.current) {
+        clearInterval(alarmIntervalRef.current);
       }
     };
-
-    audioRef.current = { play: createPleasantAlarm } as any;
   }, []);
+
+  const playAlarmSound = () => {
+    console.log('Creating pleasant alarm sound...');
+    try {
+      if (!audioContextRef.current) {
+        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      
+      const audioContext = audioContextRef.current;
+      
+      // Create a pleasant melodic sequence
+      const playNote = (frequency: number, startTime: number, duration: number) => {
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+        oscillator.type = 'sine';
+        
+        // Gentle fade in and out
+        gainNode.gain.setValueAtTime(0, startTime);
+        gainNode.gain.linearRampToValueAtTime(0.2, startTime + 0.1);
+        gainNode.gain.linearRampToValueAtTime(0.15, startTime + duration - 0.1);
+        gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
+        
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      };
+      
+      // Pleasant melody - C major chord progression
+      const now = audioContext.currentTime;
+      const noteDuration = 0.8;
+      
+      console.log('Playing alarm melody...');
+      // Play a gentle ascending melody
+      playNote(523.25, now, noteDuration); // C5
+      playNote(659.25, now + 0.4, noteDuration); // E5
+      playNote(783.99, now + 0.8, noteDuration); // G5
+      playNote(1046.50, now + 1.2, noteDuration * 1.5); // C6 - longer final note
+      
+      console.log('Alarm sound should be playing now');
+    } catch (error) {
+      console.error('Error creating alarm sound:', error);
+    }
+  };
+
+  const startAlarmLoop = () => {
+    console.log('Starting alarm loop...');
+    // Play immediately
+    playAlarmSound();
+    
+    // Then repeat every 3 seconds
+    alarmIntervalRef.current = setInterval(() => {
+      if (isAlarmRinging) {
+        playAlarmSound();
+      }
+    }, 3000);
+  };
+
+  const stopAlarmLoop = () => {
+    console.log('Stopping alarm loop...');
+    if (alarmIntervalRef.current) {
+      clearInterval(alarmIntervalRef.current);
+      alarmIntervalRef.current = null;
+    }
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
+  };
 
   const startNap = async () => {
     console.log('Starting before-dark nap...');
@@ -134,16 +171,11 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
   };
 
   const triggerAlarm = () => {
-    console.log('triggerAlarm called - setting alarm ringing state and playing sound');
+    console.log('triggerAlarm called - setting alarm ringing state and starting alarm loop');
     setIsAlarmRinging(true);
     onAlarmRing();
     
-    if (audioRef.current) {
-      console.log('Playing alarm sound...');
-      audioRef.current.play();
-    } else {
-      console.error('Audio ref is null, cannot play alarm sound');
-    }
+    startAlarmLoop();
     
     alarmTimeoutRef.current = setTimeout(() => {
       console.log('No response, extending nap by 10 minutes...');
@@ -154,6 +186,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
   const extendNap = () => {
     console.log('Extending nap by 10 minutes...');
     setIsAlarmRinging(false);
+    stopAlarmLoop();
     
     if (alarmTimeoutRef.current) {
       clearTimeout(alarmTimeoutRef.current);
@@ -169,6 +202,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
   const stopAlarm = () => {
     console.log('User stopped alarm');
     setIsAlarmRinging(false);
+    stopAlarmLoop();
     resetAlarm();
   };
 
@@ -183,6 +217,8 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     setHasRetried(false);
     setStartTime(undefined);
     setActualDuration(undefined);
+    
+    stopAlarmLoop();
     
     if (napTimerRef.current) {
       clearTimeout(napTimerRef.current);
@@ -205,6 +241,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
       if (napTimerRef.current) clearTimeout(napTimerRef.current);
       if (alarmTimeoutRef.current) clearTimeout(alarmTimeoutRef.current);
       if (retryTimeoutRef.current) clearTimeout(retryTimeoutRef.current);
+      stopAlarmLoop();
     };
   }, []);
 
@@ -213,7 +250,7 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     stopAlarm,
     stopNap: resetAlarm,
     extendNap,
-    triggerAlarm, // Add triggerAlarm to the return object
+    triggerAlarm,
     isNapping,
     isAlarmRinging,
     startTime,
