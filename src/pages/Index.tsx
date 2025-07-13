@@ -1,70 +1,33 @@
 import { useState } from 'react';
-import NapModeCarousel, { NapMode } from '@/components/NapModeCarousel';
+import TakeANapCard from '@/components/nap-modes/TakeANapCard';
 import NapScreen from '@/components/NapScreen';
 import WakeUpScreen from '@/components/WakeUpScreen';
 import ManifestoSection from '@/components/ManifestoSection';
+import LiquidGradientSection from '@/components/LiquidGradientSection';
 import { useAlarmTimer } from '@/hooks/useAlarmTimer';
-import { useBeforeDarkTimer } from '@/hooks/useBeforeDarkTimer';
-import { useOversleepTimer } from '@/hooks/useOversleepTimer';
 
 export type AppState = 'main' | 'transitioning-to-nap' | 'napping' | 'wake-up-screen' | 'transitioning-to-main';
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>('main');
-  const [currentNapMode, setCurrentNapMode] = useState<NapMode>('quick-nap');
 
   const quickNapTimer = useAlarmTimer({
     onAlarmRing: () => setAppState('wake-up-screen'),
     onAlarmStop: () => setAppState('main')
   });
 
-  const beforeDarkTimer = useBeforeDarkTimer({
-    onAlarmRing: () => setAppState('wake-up-screen'),
-    onAlarmStop: () => setAppState('main')
-  });
-
-  const oversleepTimer = useOversleepTimer({
-    onAlarmRing: () => setAppState('wake-up-screen'),
-    onAlarmStop: () => setAppState('main')
-  });
-
-  const getCurrentTimer = () => {
-    switch (currentNapMode) {
-      case 'quick-nap':
-        return quickNapTimer;
-      case 'before-dark':
-        return beforeDarkTimer;
-      case 'if-oversleep':
-        return oversleepTimer;
-      default:
-        return quickNapTimer;
-    }
-  };
-
-  const handleStartNap = (mode: NapMode) => {
-    setCurrentNapMode(mode);
+  const handleStartNap = () => {
     setAppState('transitioning-to-nap');
     
     setTimeout(() => {
       setAppState('napping');
-      
-      switch (mode) {
-        case 'quick-nap':
-          quickNapTimer.startNap();
-          break;
-        case 'before-dark':
-          beforeDarkTimer.startNap();
-          break;
-        case 'if-oversleep':
-          oversleepTimer.startNap();
-          break;
-      }
+      quickNapTimer.startNap();
     }, 2000);
   };
 
   const handleImAwake = () => {
     setAppState('transitioning-to-main');
-    getCurrentTimer().stopAlarm();
+    quickNapTimer.stopAlarm();
     
     setTimeout(() => {
       setAppState('main');
@@ -73,21 +36,20 @@ const Index = () => {
 
   const handleLetMeBe = () => {
     setAppState('napping');
-    getCurrentTimer().extendNap();
+    quickNapTimer.extendNap();
   };
 
   const handleStopNap = () => {
-    getCurrentTimer().stopNap();
+    quickNapTimer.stopNap();
     setAppState('main');
   };
 
   const handleTestWakeUp = () => {
     console.log('Test wake up button pressed');
     // Trigger the alarm sound before showing wake up screen
-    const currentTimer = getCurrentTimer();
-    if (currentTimer.triggerAlarm) {
+    if (quickNapTimer.triggerAlarm) {
       console.log('Calling triggerAlarm for test');
-      currentTimer.triggerAlarm();
+      quickNapTimer.triggerAlarm();
     }
     setAppState('wake-up-screen');
   };
@@ -104,10 +66,19 @@ const Index = () => {
               ? 'animate-transition-in'
               : 'opacity-0 pointer-events-none'
       }`}>
-        <NapModeCarousel 
-          onStartNap={handleStartNap} 
-          isTransitioning={appState === 'transitioning-to-nap'} 
-        />
+        <div className="w-full h-screen relative">
+          {/* Animated Liquid Gradient Background */}
+          <LiquidGradientSection />
+          
+          {/* Fixed Logo */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 z-20" style={{ top: '40px' }}>
+            <img src="/lovable-uploads/f9b778ca-c623-432b-bd31-3dab3ea23e93.png" alt="lazy alarm logo" className="h-16 w-auto" />
+          </div>
+
+          <div className="w-full h-screen relative z-10">
+            <TakeANapCard onStartNap={handleStartNap} isTransitioning={appState === 'transitioning-to-nap'} />
+          </div>
+        </div>
         <ManifestoSection />
       </div>
       
@@ -120,9 +91,9 @@ const Index = () => {
         }`}>
           <NapScreen 
             onStopNap={handleStopNap}
-            napMode={currentNapMode}
-            startTime={getCurrentTimer().startTime}
-            actualDuration={getCurrentTimer().actualDuration}
+            napMode="quick-nap"
+            startTime={quickNapTimer.startTime}
+            actualDuration={quickNapTimer.actualDuration}
             isTransitioning={appState === 'transitioning-to-nap'}
             onTestWakeUp={handleTestWakeUp}
           />
