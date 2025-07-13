@@ -1,3 +1,30 @@
+@font-face {
+  font-family: 'PPWoodland-Regular';
+  src: url('/fonts/PPWoodland-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PPWoodland-Bold';
+  src: url('/fonts/PPWoodland-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PPWoodland-Heavy';
+  src: url('/fonts/PPWoodland-Heavy.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PPWoodland-Ultralight';
+  src: url('/fonts/PPWoodland-Ultralight.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+}
 
 @tailwind base;
 @tailwind components;

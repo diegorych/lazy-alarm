@@ -11,7 +11,7 @@ const BeforeItGetsDarkCard = ({ onStartNap, isTransitioning = false }: BeforeItG
     <div className="h-screen flex flex-col relative">
       {/* Centered Content */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8">
-        <h1 className={`text-4xl md:text-5xl font-normal mb-12 text-center text-slate-50 ${
+        <h1 className={`text-4xl md:text-5xl font-ultralight mb-12 text-center text-slate-50 ${
           isTransitioning ? 'animate-text-move-out' : 'animate-fade-in'
         }`}>
           Before it gets dark

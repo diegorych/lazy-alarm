@@ -18,6 +18,12 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+  woodland: ['PPWoodland-Regular', 'sans-serif'],
+  bold: ['PPWoodland-Bold', 'sans-serif'],
+  heavy: ['PPWoodland-Heavy', 'sans-serif'],
+  ultralight: ['PPWoodland-Ultralight', 'sans-serif'],
+},	
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

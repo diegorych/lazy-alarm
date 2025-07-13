@@ -85,7 +85,7 @@ const MainScreen = ({
         {/* Paragraph at bottom */}
         <div className="pb-16 flex justify-center relative z-10">
           <p className="font-light text-black text-center max-w-lg leading-relaxed" style={{ fontSize: '14px' }}>
-            Hola! A short, no-pressure nap. We won't say how long (something like 20 or 30 minutes), but it's enough to reset without ruining your day.
+            A short, no-pressure nap. We won't say how long (something like 20 or 30 minutes), but it's enough to reset without ruining your day.
           </p>
         </div>
       </div>

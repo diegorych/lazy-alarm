@@ -11,10 +11,10 @@ const TakeANapCard = ({ onStartNap, isTransitioning = false }: TakeANapCardProps
     <div className="h-screen flex flex-col relative">
       {/* Centered Content */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8">
-        <h1 className={`text-4xl md:text-5xl font-normal mb-12 text-center text-slate-50 ${
+        <h1 className={`font-ultralight text-5xl md:text-5xl mb-12 text-center text-slate-50 ${
           isTransitioning ? 'animate-text-move-out' : 'animate-fade-in'
         }`}>
-          Take a quick nap
+          Take a quick <span className="font-woodland">nap</span>
         </h1>
 
         <Button 
