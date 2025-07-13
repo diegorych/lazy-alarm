@@ -11,10 +11,10 @@ const TakeANapCard = ({ onStartNap, isTransitioning = false }: TakeANapCardProps
     <div className="h-screen flex flex-col relative">
       {/* Centered Content */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8">
-        <h1 className={`font-ultralight text-5xl md:text-5xl mb-12 text-center text-slate-50 ${
+        <h1 className={`font-wUltralight text-5xl md:text-5xl mb-12 text-center text-slate-50 ${
           isTransitioning ? 'animate-text-move-out' : 'animate-fade-in'
         }`}>
-          Take a quick <span className="font-woodland">nap</span>
+          Take a quick <span className="font-wRegular">nap</span>
         </h1>
 
         <Button 
@@ -29,9 +29,9 @@ const TakeANapCard = ({ onStartNap, isTransitioning = false }: TakeANapCardProps
 
       {/* Description at bottom */}
       <div className="pb-10 flex justify-center relative z-10 px-8">
-        <p className={`font-light text-black text-center max-w-lg leading-relaxed ${
+        <p className={`font-tRegular font-light text-black text-center max-w-lg leading-relaxed ${
           isTransitioning ? 'animate-text-move-out' : 'animate-fade-in'
-        }`} style={{ fontSize: '14px' }}>
+        }`}>
           {"A short, no-pressure nap. We won't say how long (something like 20 or 30 minutes), but it's enough to reset without ruining your day."}
         </p>
       </div>

@@ -19,11 +19,15 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-  woodland: ['PPWoodland-Regular', 'sans-serif'],
-  bold: ['PPWoodland-Bold', 'sans-serif'],
-  heavy: ['PPWoodland-Heavy', 'sans-serif'],
-  ultralight: ['PPWoodland-Ultralight', 'sans-serif'],
-},	
+				wRegular: ['PPWoodland-Regular', 'sans-serif'],
+				wBold: ['PPWoodland-Bold', 'sans-serif'],
+				wHeavy: ['PPWoodland-Heavy', 'sans-serif'],
+				wUltralight: ['PPWoodland-Ultralight', 'sans-serif'],
+				tRegular: ['Telegraf-Regular', 'sans-serif'],
+				tBold: ['Telegraf-Bold', 'sans-serif'],
+				tHeavy: ['Telegraf-Heavy', 'sans-serif'],
+				tUltralight: ['Telegraf-Ultralight', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',

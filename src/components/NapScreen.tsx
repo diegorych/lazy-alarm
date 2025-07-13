@@ -90,7 +90,7 @@ const NapScreen = ({
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
         {/* Rotating Nap Text */}
         <h1 
-          className={`text-3xl md:text-4xl font-light text-white leading-relaxed max-w-md transition-opacity duration-1000 ${
+          className={`text-3xl md:text-4xl font-wRegular text-white leading-relaxed max-w-md transition-opacity duration-1000 ${
             isTransitioning 
               ? 'opacity-0' 
               : isTransitioningPhrase 

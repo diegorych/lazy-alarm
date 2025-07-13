@@ -35,7 +35,7 @@ const WakeUpScreen = ({
       {/* Main Content - Centered */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
         <h1 
-          className={`text-4xl md:text-5xl font-normal text-black leading-relaxed max-w-md transition-all duration-1000 ${
+          className={`text-4xl md:text-5xl font-wRegular text-black leading-relaxed max-w-md transition-all duration-1000 ${
             isTransitioning 
               ? 'opacity-0 transform translate-y-8' 
               : 'opacity-100'

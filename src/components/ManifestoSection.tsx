@@ -29,7 +29,7 @@ const ManifestoSection = () => {
   return (
     <div 
       id="manifesto-section"
-      className="min-h-screen flex flex-col items-center justify-center px-8 bg-gradient-to-br from-gray-50 to-white"
+      className="min-h-screen flex flex-col items-center justify-center px-10 py-12 bg-gradient-to-br from-gray-50 to-white"
     >
       {/* Title */}
       <div 
@@ -40,7 +40,7 @@ const ManifestoSection = () => {
         }`}
         style={{ transitionDelay: '200ms' }}
       >
-        <h2 className="text-2xl md:text-2xl font-normal text-center" style={{ color: '#080908' }}>
+        <h2 className="text-base md:text-2xl font-tRegular text-center" style={{ color: '#080908' }}>
           THIS ISN'T AN ALARM
         </h2>
       </div>
@@ -48,8 +48,8 @@ const ManifestoSection = () => {
       {/* Text content - left aligned */}
       <div className="max-w-2xl w-full space-y-6">
         <p 
-          className={`text-base font-normal leading-relaxed text-left transition-all duration-1000 ease-out ${
-            isVisible 
+          className={`text-xl font-wRegular leading-relaxed text-left transition-all duration-1000 ease-out ${
+            isVisible
               ? 'opacity-100 translate-y-0' 
               : 'opacity-0 translate-y-8'
           }`}
@@ -58,11 +58,11 @@ const ManifestoSection = () => {
             transitionDelay: '400ms'
           }}
         >
-          lazy alarm is a gentle excuse to slip away for a while. It's not here to optimize your sleep, track your rhythms, or launch you into action.
+          <span className="font-wBold">lazy alarm</span> is a gentle excuse to slip away for a while. It's not here to optimize your sleep, track your rhythms, or launch you into action.
         </p>
         
         <p 
-          className={`text-base font-normal leading-relaxed text-left transition-all duration-1000 ease-out ${
+          className={`text-xl font-wRegular leading-relaxed text-left transition-all duration-1000 ease-out ${
             isVisible 
               ? 'opacity-100 translate-y-0' 
               : 'opacity-0 translate-y-8'
@@ -76,7 +76,7 @@ const ManifestoSection = () => {
         </p>
         
         <p 
-          className={`text-base font-normal leading-relaxed text-left transition-all duration-1000 ease-out ${
+          className={`text-xl font-wRegular leading-relaxed text-left transition-all duration-1000 ease-out ${
             isVisible 
               ? 'opacity-100 translate-y-0' 
               : 'opacity-0 translate-y-8'
