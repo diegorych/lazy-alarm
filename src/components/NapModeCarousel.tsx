@@ -24,7 +24,7 @@ const NapModeCarousel = ({ onStartNap, isTransitioning = false }: NapModeCarouse
       <LiquidGradientSection />
       
       {/* Fixed Logo */}
-      <div className="absolute left-1/2 transform -translate-x-1/2 z-20" style={{ top: '40px' }}>
+      <div className="absolute left-1/2 transform -translate-x-1/2 z-20">
         <img src="/lovable-uploads/f9b778ca-c623-432b-bd31-3dab3ea23e93.png" alt="lazy alarm logo" className="h-16 w-auto" />
       </div>
 

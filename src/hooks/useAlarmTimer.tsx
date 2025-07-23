@@ -13,7 +13,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
   const [hasRetried, setHasRetried] = useState(false);
   const [startTime, setStartTime] = useState<number | undefined>(undefined);
   const [actualDuration, setActualDuration] = useState<number | undefined>(undefined);
-  
+
   const napTimerRef = useRef<NodeJS.Timeout | null>(null);
   const alarmTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -33,58 +33,25 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     };
   }, []);
 
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+
   const playAlarmSound = () => {
-    console.log('Creating pleasant alarm sound...');
-    try {
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      
-      const audioContext = audioContextRef.current;
-      
-      // Create a pleasant melodic sequence
-      const playNote = (frequency: number, startTime: number, duration: number) => {
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        
-        oscillator.frequency.setValueAtTime(frequency, startTime);
-        oscillator.type = 'sine';
-        
-        // Gentle fade in and out
-        gainNode.gain.setValueAtTime(0, startTime);
-        gainNode.gain.linearRampToValueAtTime(0.3, startTime + 0.1);
-        gainNode.gain.linearRampToValueAtTime(0.2, startTime + duration - 0.1);
-        gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
-        
-        oscillator.start(startTime);
-        oscillator.stop(startTime + duration);
-      };
-      
-      // Pleasant melody - C major chord progression
-      const now = audioContext.currentTime;
-      const noteDuration = 0.8;
-      
-      console.log('Playing alarm melody...');
-      // Play a gentle ascending melody
-      playNote(523.25, now, noteDuration); // C5
-      playNote(659.25, now + 0.4, noteDuration); // E5
-      playNote(783.99, now + 0.8, noteDuration); // G5
-      playNote(1046.50, now + 1.2, noteDuration * 1.5); // C6 - longer final note
-      
-      console.log('Alarm sound should be playing now');
-    } catch (error) {
-      console.error('Error creating alarm sound:', error);
-    }
+    const audio = new Audio('/sounds/despertador.mp3');
+    audio.loop = true;
+    audio.play().catch((e) => {
+      console.error("Error al reproducir el sonido de alarma:", e);
+    });
+    audioRef.current = audio;
   };
+
+
 
   const startAlarmLoop = () => {
     console.log('Starting alarm loop...');
     // Play immediately
     playAlarmSound();
-    
+
     // Then repeat every 3 seconds
     alarmIntervalRef.current = setInterval(() => {
       if (isAlarmRinging) {
@@ -111,15 +78,15 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     setStartTime(napStartTime);
     setIsNapping(true);
     setHasRetried(false);
-    
+
     // Random duration between 20-30 minutes
     const randomMinutes = Math.floor(Math.random() * 11) + 20; // 20 to 30 minutes
     const napDuration = randomMinutes * 60 * 1000; // convert to milliseconds
     setActualDuration(napDuration);
     console.log(`Nap duration: ${randomMinutes} minutes`);
-    
+
     setTimeRemaining(napDuration);
-    
+
     napTimerRef.current = setTimeout(() => {
       console.log('Nap time over, showing wake up screen...');
       triggerAlarm();
@@ -130,9 +97,9 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     console.log('triggerAlarm called - setting alarm ringing state and starting alarm loop');
     setIsAlarmRinging(true);
     onAlarmRing();
-    
+
     startAlarmLoop();
-    
+
     // Auto-extend after 30 seconds if no response
     alarmTimeoutRef.current = setTimeout(() => {
       console.log('No response, extending nap by 10 minutes...');
@@ -144,13 +111,13 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     console.log('Extending nap by 10 minutes...');
     setIsAlarmRinging(false);
     stopAlarmLoop();
-    
+
     // Clear the auto-extend timeout
     if (alarmTimeoutRef.current) {
       clearTimeout(alarmTimeoutRef.current);
       alarmTimeoutRef.current = null;
     }
-    
+
     // Set new timer for 10 minutes
     napTimerRef.current = setTimeout(() => {
       console.log('Extended nap time over, showing wake up screen again...');
@@ -163,6 +130,12 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     setIsAlarmRinging(false);
     stopAlarmLoop();
     resetAlarm();
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
   };
 
   const stopNap = () => {
@@ -177,9 +150,9 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     setHasRetried(false);
     setStartTime(undefined);
     setActualDuration(undefined);
-    
+
     stopAlarmLoop();
-    
+
     // Clear all timers
     if (napTimerRef.current) {
       clearTimeout(napTimerRef.current);
@@ -193,7 +166,7 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
       clearTimeout(retryTimeoutRef.current);
       retryTimeoutRef.current = null;
     }
-    
+
     onAlarmStop();
   };
 
