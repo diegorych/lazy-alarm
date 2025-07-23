@@ -38,26 +38,15 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
 
   const playAlarmSound = () => {
     const audio = new Audio('/sounds/despertador.mp3');
-    audio.loop = true;
     audio.play().catch((e) => {
       console.error("Error al reproducir el sonido de alarma:", e);
     });
     audioRef.current = audio;
   };
 
-
-
   const startAlarmLoop = () => {
-    console.log('Starting alarm loop...');
-    // Play immediately
+    console.log('Playing alarm sound...');
     playAlarmSound();
-
-    // Then repeat every 3 seconds
-    alarmIntervalRef.current = setInterval(() => {
-      if (isAlarmRinging) {
-        playAlarmSound();
-      }
-    }, 3000);
   };
 
   const stopAlarmLoop = () => {

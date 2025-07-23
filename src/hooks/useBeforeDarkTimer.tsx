@@ -47,64 +47,19 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     };
   }, []);
 
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   const playAlarmSound = () => {
-    console.log('Creating pleasant alarm sound...');
-    try {
-      if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      }
-      
-      const audioContext = audioContextRef.current;
-      
-      // Create a pleasant melodic sequence
-      const playNote = (frequency: number, startTime: number, duration: number) => {
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-        
-        oscillator.frequency.setValueAtTime(frequency, startTime);
-        oscillator.type = 'sine';
-        
-        // Gentle fade in and out
-        gainNode.gain.setValueAtTime(0, startTime);
-        gainNode.gain.linearRampToValueAtTime(0.2, startTime + 0.1);
-        gainNode.gain.linearRampToValueAtTime(0.15, startTime + duration - 0.1);
-        gainNode.gain.linearRampToValueAtTime(0, startTime + duration);
-        
-        oscillator.start(startTime);
-        oscillator.stop(startTime + duration);
-      };
-      
-      // Pleasant melody - C major chord progression
-      const now = audioContext.currentTime;
-      const noteDuration = 0.8;
-      
-      console.log('Playing alarm melody...');
-      // Play a gentle ascending melody
-      playNote(523.25, now, noteDuration); // C5
-      playNote(659.25, now + 0.4, noteDuration); // E5
-      playNote(783.99, now + 0.8, noteDuration); // G5
-      playNote(1046.50, now + 1.2, noteDuration * 1.5); // C6 - longer final note
-      
-      console.log('Alarm sound should be playing now');
-    } catch (error) {
-      console.error('Error creating alarm sound:', error);
-    }
+    const audio = new Audio('/sounds/despertador.mp3');
+    audio.play().catch((e) => {
+      console.error("Error al reproducir el sonido de alarma:", e);
+    });
+    audioRef.current = audio;
   };
 
   const startAlarmLoop = () => {
-    console.log('Starting alarm loop...');
-    // Play immediately
+    console.log('Playing alarm sound...');
     playAlarmSound();
-    
-    // Then repeat every 3 seconds
-    alarmIntervalRef.current = setInterval(() => {
-      if (isAlarmRinging) {
-        playAlarmSound();
-      }
-    }, 3000);
   };
 
   const stopAlarmLoop = () => {
@@ -113,9 +68,10 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
       clearInterval(alarmIntervalRef.current);
       alarmIntervalRef.current = null;
     }
-    if (audioContextRef.current) {
-      audioContextRef.current.close();
-      audioContextRef.current = null;
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
     }
   };
 
@@ -204,6 +160,12 @@ export const useBeforeDarkTimer = ({ onAlarmRing, onAlarmStop }: UseBeforeDarkTi
     setIsAlarmRinging(false);
     stopAlarmLoop();
     resetAlarm();
+
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
   };
 
   const stopNap = () => {
