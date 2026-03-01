@@ -56,7 +56,7 @@ const NapScreen = ({
   }, [phrases.length, isTransitioning]);
 
   return (
-    <div className="min-h-screen flex flex-col px-8 relative overflow-hidden animate-fade-in" style={{ animationDuration: '2s' }}>
+    <div className="min-h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
       {/* Night sky background */}
       <div 
         className="absolute inset-0"
