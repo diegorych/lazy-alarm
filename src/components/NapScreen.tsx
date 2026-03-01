@@ -2,6 +2,7 @@
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import DebugTimer from './DebugTimer';
+import CircularNapProgress from './CircularNapProgress';
 
 interface NapScreenProps {
   onStopNap: () => void;
@@ -88,18 +89,19 @@ const NapScreen = ({
       
       {/* Main Content - Centered */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
-        {/* Rotating Nap Text */}
-        <h1 
-          className={`text-3xl md:text-4xl font-wRegular text-white leading-relaxed max-w-md transition-opacity duration-1000 ${
-            isTransitioning 
-              ? 'opacity-0' 
-              : isTransitioningPhrase 
-                ? 'opacity-0' 
-                : 'opacity-100'
-          }`}
+        <CircularNapProgress
+          startTime={startTime}
+          actualDuration={actualDuration}
+          isTransitioning={isTransitioning}
         >
-          {phrases[currentPhraseIndex]}
-        </h1>
+          <h1 
+            className={`text-lg md:text-xl font-wRegular text-white leading-relaxed transition-opacity duration-1000 ${
+              isTransitioningPhrase ? 'opacity-0' : 'opacity-100'
+            }`}
+          >
+            {phrases[currentPhraseIndex]}
+          </h1>
+        </CircularNapProgress>
       </div>
 
       {/* I'm awake button at bottom */}
