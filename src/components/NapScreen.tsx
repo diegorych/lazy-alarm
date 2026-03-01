@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import DebugTimer from './DebugTimer';
 import CircularNapProgress from './CircularNapProgress';
+import StarField from './StarField';
 
 interface NapScreenProps {
   onStopNap: () => void;
@@ -46,46 +47,19 @@ const NapScreen = ({
   }, [phrases.length, isTransitioning]);
 
   return (
-    <div className="min-h-screen flex flex-col px-8 relative overflow-hidden">
-      {/* Animated Liquid Gradient Background for Nap */}
-      <div className="nap-liquid-gradient-container">
-        <div className="nap-liquid-gradient-bg">
-          <div className="nap-gradient-blob nap-blob-single"></div>
-        </div>
-      </div>
-
-      {/* Debug Timer */}
-      {!isTransitioning && (
-        <DebugTimer 
-          isNapping={true}
-          napMode={napMode}
-          startTime={startTime}
-          actualDuration={actualDuration}
-        />
-      )}
-
-      {/* Test Button - now visible on mobile and development */}
-      {!isTransitioning && onTestWakeUp && (
-        <div className="absolute top-4 right-4 z-50">
-          <Button
-            onClick={onTestWakeUp}
-            className="bg-red-500/80 text-white px-4 py-2 text-sm rounded hover:bg-red-600/80 transition-all duration-300 backdrop-blur-sm"
-          >
-            Test Wake Up
-          </Button>
-        </div>
-      )}
-
-      {/* Background Image - now with lower opacity to blend with animated background */}
+    <div className="min-h-screen flex flex-col px-8 relative overflow-hidden animate-fade-in" style={{ animationDuration: '2s' }}>
+      {/* Night sky background */}
       <div 
-        className="absolute inset-0 opacity-30"
+        className="absolute inset-0"
         style={{
-          backgroundImage: `url('/lovable-uploads/6a346e15-a6cd-4cbb-b120-f11f4fa549cf.png')`,
+          backgroundImage: `url('/lovable-uploads/nap-bg-stars.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
+          backgroundRepeat: 'no-repeat',
         }}
       />
+      {/* Animated star field */}
+      <StarField />
       
       {/* Main Content - Centered */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
