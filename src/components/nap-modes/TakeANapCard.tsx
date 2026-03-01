@@ -1,5 +1,5 @@
 
-import { Button } from '@/components/ui/button';
+
 
 interface TakeANapCardProps {
   onStartNap: () => void;
@@ -11,18 +11,24 @@ const TakeANapCard = ({ onStartNap, isTransitioning = false }: TakeANapCardProps
     <div className="h-screen flex flex-col relative">
       {/* Centered Content */}
       <div className="flex-1 flex flex-col items-center justify-center relative z-10 px-8">
-        <h1 className={`font-wUltralight text-5xl md:text-5xl mb-8 text-center text-slate-50 ${isTransitioning ? 'animate-text-move-out' : 'animate-fade-in'
-          }`}>
-          Take a <br />quick <span className="font-wBold ">nap</span>
-        </h1>
-
-        <Button
+        <button
           onClick={onStartNap}
-          className={`bg-white/90 text-gray-800 px-10 pt-6 pb-5 text-base rounded-full hover:bg-white transition-all duration-300 hover:scale-105 shadow-lg backdrop-blur-sm ${isTransitioning ? 'animate-text-move-out' : 'animate-fade-in'
-            }`}
+          className={`group relative w-52 h-52 md:w-60 md:h-60 rounded-full cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95 ${isTransitioning ? 'animate-text-move-out' : 'animate-fade-in'}`}
+          style={{
+            background: 'radial-gradient(circle at 35% 35%, rgba(255,255,255,0.95) 0%, rgba(240,238,235,0.9) 40%, rgba(210,205,200,0.85) 70%, rgba(180,175,170,0.8) 100%)',
+            boxShadow: `
+              0 8px 32px rgba(0,0,0,0.18),
+              0 2px 8px rgba(0,0,0,0.12),
+              inset 0 -4px 12px rgba(0,0,0,0.06),
+              inset 0 4px 12px rgba(255,255,255,0.8),
+              0 0 0 1px rgba(255,255,255,0.3)
+            `,
+          }}
         >
-          Start sleeping →
-        </Button>
+          <span className="font-wUltralight text-xl md:text-2xl text-gray-700 leading-tight text-center block px-6">
+            Take a<br />quick <span className="font-wBold">nap</span>
+          </span>
+        </button>
       </div>
 
       {/* Description at bottom */}
