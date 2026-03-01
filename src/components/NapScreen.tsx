@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import DebugTimer from './DebugTimer';
 import CircularNapProgress from './CircularNapProgress';
 import StarField from './StarField';
+import useWhiteNoise from '@/hooks/useWhiteNoise';
+import { Volume2, VolumeX } from 'lucide-react';
 
 interface NapScreenProps {
   onStopNap: () => void;
@@ -22,6 +24,8 @@ const NapScreen = ({
   isTransitioning = false,
   onTestWakeUp
 }: NapScreenProps) => {
+  const { isPlaying: isWhiteNoise, toggle: toggleWhiteNoise, stop: stopWhiteNoise } = useWhiteNoise();
+
   const phrases = [
     "Let the world keep spinning without you",
     "You're resting. That's enough",
@@ -30,6 +34,11 @@ const NapScreen = ({
 
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
   const [isTransitioningPhrase, setIsTransitioningPhrase] = useState(false);
+
+  // Stop white noise when leaving nap screen
+  useEffect(() => {
+    return () => stopWhiteNoise();
+  }, [stopWhiteNoise]);
 
   useEffect(() => {
     if (isTransitioning) return;
@@ -60,6 +69,23 @@ const NapScreen = ({
       />
       {/* Animated star field */}
       <StarField />
+
+      {/* White noise button */}
+      {!isTransitioning && (
+        <div className="absolute top-6 right-6 z-20">
+          <button
+            onClick={toggleWhiteNoise}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md transition-all duration-300 text-sm font-wRegular ${
+              isWhiteNoise 
+                ? 'bg-white/25 text-white border border-white/40' 
+                : 'bg-white/10 text-white/60 border border-white/20'
+            }`}
+          >
+            {isWhiteNoise ? <Volume2 size={16} /> : <VolumeX size={16} />}
+            White noise
+          </button>
+        </div>
+      )}
       
       {/* Main Content - Centered */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center">
