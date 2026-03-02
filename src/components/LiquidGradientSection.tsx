@@ -7,6 +7,7 @@ const LiquidGradientSection = () => {
       <div className="liquid-gradient-bg">
         <div className="gradient-blob blob-single"></div>
       </div>
+      <div className="noise-overlay" />
     </div>
   );
 };

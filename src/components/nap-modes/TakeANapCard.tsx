@@ -25,7 +25,7 @@ const TakeANapCard = ({ onStartNap, isTransitioning = false }: TakeANapCardProps
             `,
           }}
         >
-          <span className="font-wUltralight text-xl md:text-2xl text-gray-700 leading-tight text-center block px-6">
+          <span className="font-wUltralight text-2xl md:text-3xl text-gray-700 leading-tight text-center block px-6">
             Take a<br />quick <span className="font-wBold">nap</span>
           </span>
         </button>
