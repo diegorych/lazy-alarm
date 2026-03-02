@@ -57,11 +57,16 @@ const NapScreen = ({
 
   return (
     <div className="min-h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
-      {/* Night sky background */}
+      {/* Night sky background - mirror horizontally in landscape */}
+      <style>{`
+        @media (orientation: landscape) {
+          .nap-bg-container { transform: scaleX(-1); }
+        }
+      `}</style>
       <div 
-        className="absolute inset-0"
+        className="absolute inset-0 nap-bg-container"
         style={{
-          backgroundImage: `url('/lovable-uploads/nap-bg-stars.png')`,
+          backgroundImage: `url('/lovable-uploads/nap-bg-stars.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
