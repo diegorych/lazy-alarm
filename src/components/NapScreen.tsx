@@ -57,21 +57,41 @@ const NapScreen = ({
 
   return (
     <div className="min-h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
-      {/* Night sky background - mirror horizontally in landscape */}
+      {/* Night sky background - duplicate mirrored in landscape */}
       <style>{`
+        .nap-bg-left, .nap-bg-right {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          background-image: url('/lovable-uploads/nap-bg-stars.jpg');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+        .nap-bg-left {
+          left: 0;
+          right: 0;
+        }
+        .nap-bg-right {
+          display: none;
+        }
         @media (orientation: landscape) {
-          .nap-bg-container { transform: scaleX(-1); }
+          .nap-bg-left {
+            left: 0;
+            right: 50%;
+            background-position: right center;
+          }
+          .nap-bg-right {
+            display: block;
+            left: 50%;
+            right: 0;
+            transform: scaleX(-1);
+            background-position: right center;
+          }
         }
       `}</style>
-      <div 
-        className="absolute inset-0 nap-bg-container"
-        style={{
-          backgroundImage: `url('/lovable-uploads/nap-bg-stars.jpg')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      />
+      <div className="nap-bg-left" />
+      <div className="nap-bg-right" />
       {/* Animated star field */}
       <StarField />
 
