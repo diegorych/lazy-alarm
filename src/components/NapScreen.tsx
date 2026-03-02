@@ -92,6 +92,13 @@ const NapScreen = ({
       `}</style>
       <div className="nap-bg-left" />
       <div className="nap-bg-right" />
+      {/* Dark overlay with vignette */}
+      <div 
+        className="absolute inset-0 z-[1]"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.55) 100%)',
+        }}
+      />
       {/* Animated star field */}
       <StarField />
 
