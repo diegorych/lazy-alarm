@@ -32,10 +32,10 @@ const CircularNapProgress = ({
     return () => clearInterval(interval);
   }, [startTime, actualDuration]);
 
-  const size = 280;
+  const size = 320;
   const center = size / 2;
-  const radius = 120;
-  const strokeWidth = 28;
+  const radius = 135;
+  const strokeWidth = 30;
 
   const polarToCartesian = (angle: number) => {
     const rad = ((angle - 90) * Math.PI) / 180;
@@ -68,7 +68,7 @@ const CircularNapProgress = ({
   const filledSegments = progress * SEGMENTS;
 
   return (
-    <div className={`relative inline-flex items-center justify-center transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'} w-[280px] h-[280px] md:w-[420px] md:h-[420px]`}>
+    <div className={`relative inline-flex items-center justify-center transition-opacity duration-1000 ${isTransitioning ? 'opacity-0' : 'opacity-100'} w-[320px] h-[320px] md:w-[460px] md:h-[460px]`}>
       <svg width="100%" height="100%" viewBox={`0 0 ${size} ${size}`}>
         {Array.from({ length: SEGMENTS }).map((_, i) => {
           const startAngle = i * (SEGMENT_ARC + SEGMENT_GAP);
@@ -94,9 +94,7 @@ const CircularNapProgress = ({
       </svg>
       {/* Center content */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="max-w-[180px] md:max-w-[280px] text-center">
-          {children}
-        </div>
+        {children}
       </div>
     </div>
   );

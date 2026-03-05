@@ -55,7 +55,7 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen w-full overflow-hidden relative">
+    <div className="min-h-screen w-full overflow-hidden relative bg-black">
       {/* Main screen */}
       <div className={`relative ${
         appState === 'main' 
@@ -66,16 +66,17 @@ const Index = () => {
               ? 'animate-transition-in'
               : 'opacity-0 pointer-events-none'
       }`}>
-        <div className="w-full h-screen relative">
-          {/* Animated Liquid Gradient Background */}
+        <div className="w-full h-screen relative bg-black text-white">
+          {/* Background */}
           <LiquidGradientSection />
-          
-          {/* Fixed Logo */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 z-20" style={{ top: '40px' }}>
-            <img src="/lovable-uploads/f9b778ca-c623-432b-bd31-3dab3ea23e93.png" alt="lazy alarm logo" className="h-16 w-auto" />
+
+          {/* Logo */}
+          <div className="absolute inset-x-0 top-10 flex justify-center z-20">
+            <img src="/logo.svg" alt="lazy alarm logo" className="h-8 md:h-10 w-auto" />
           </div>
 
-          <div className="w-full h-screen relative z-10">
+          {/* Main hero */}
+          <div className="w-full h-full relative z-10 flex flex-col">
             <TakeANapCard onStartNap={handleStartNap} isTransitioning={appState === 'transitioning-to-nap'} />
           </div>
         </div>

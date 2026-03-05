@@ -37,33 +37,16 @@ const NapScreen = ({
   const { isPlaying: isWhiteNoise, toggle: toggleWhiteNoise, stop: stopWhiteNoise } = useWhiteNoise();
   const [scene, setScene] = useState<NapScene>('campfire');
 
-  const phrases = [
-    "Let the world keep spinning without you",
-    "You're resting. That's enough",
-    "There's nowhere else to be"
-  ];
-
-  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
-  const [isTransitioningPhrase, setIsTransitioningPhrase] = useState(false);
-
   useEffect(() => {
-    return () => stopWhiteNoise();
+    // Bloquear scroll mientras está la pantalla de siesta
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      stopWhiteNoise();
+    };
   }, [stopWhiteNoise]);
-
-  useEffect(() => {
-    if (isTransitioning) return;
-    
-    const interval = setInterval(() => {
-      setIsTransitioningPhrase(true);
-      
-      setTimeout(() => {
-        setCurrentPhraseIndex((prev) => (prev + 1) % phrases.length);
-        setIsTransitioningPhrase(false);
-      }, 300);
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, [phrases.length, isTransitioning]);
 
   const cycleScene = () => {
     const currentIndex = SCENES.findIndex(s => s.id === scene);
@@ -140,15 +123,7 @@ const NapScreen = ({
           startTime={startTime}
           actualDuration={actualDuration}
           isTransitioning={isTransitioning}
-        >
-          <h1 
-            className={`text-lg md:text-xl font-wRegular text-white leading-relaxed transition-opacity duration-1000 ${
-              isTransitioningPhrase ? 'opacity-0' : 'opacity-100'
-            }`}
-          >
-            {phrases[currentPhraseIndex]}
-          </h1>
-        </CircularNapProgress>
+        />
       </div>
 
       {/* I'm awake button at bottom */}

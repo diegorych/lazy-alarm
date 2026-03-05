@@ -18,16 +18,9 @@ export default {
 			}
 		},
 		extend: {
-			fontFamily: {
-				wRegular: ['PPWoodland-Regular', 'sans-serif'],
-				wBold: ['PPWoodland-Bold', 'sans-serif'],
-				wHeavy: ['PPWoodland-Heavy', 'sans-serif'],
-				wUltralight: ['PPWoodland-Ultralight', 'sans-serif'],
-				tRegular: ['Telegraf-Regular', 'sans-serif'],
-				tBold: ['Telegraf-Bold', 'sans-serif'],
-				tHeavy: ['Telegraf-Heavy', 'sans-serif'],
-				tUltralight: ['Telegraf-Ultralight', 'sans-serif'],
-			},
+        fontFamily: {
+          sans: ['"Space Grotesk"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        },
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
