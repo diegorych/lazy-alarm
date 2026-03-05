@@ -1,16 +1,18 @@
 
 import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
+import StarField from './StarField';
 import DebugTimer from './DebugTimer';
 import CircularNapProgress from './CircularNapProgress';
 import useWhiteNoise from '@/hooks/useWhiteNoise';
 import { Volume2, VolumeX } from 'lucide-react';
 
 const SCENES = [
-  { id: 'campfire', emoji: '🔥', video: '/videos/campfire.mp4' },
-  { id: 'forest', emoji: '🌲', video: '/videos/forest.mp4' },
-  { id: 'water', emoji: '🌊', video: '/videos/water.mp4' },
-  { id: 'stars', emoji: '✨', video: '/videos/stars.mp4' },
+  { id: 'campfire', emoji: '🔥', type: 'video', src: '/videos/campfire.mp4' },
+  { id: 'forest', emoji: '🌲', type: 'video', src: '/videos/forest.mp4' },
+  { id: 'water', emoji: '🌊', type: 'video', src: '/videos/water.mp4' },
+  { id: 'stars', emoji: '✨', type: 'video', src: '/videos/stars.mp4' },
+  { id: 'night-sky', emoji: '🌙', type: 'image', src: '/lovable-uploads/nap-bg-stars.jpg' },
 ] as const;
 
 type NapScene = typeof SCENES[number]['id'];
@@ -76,15 +78,22 @@ const NapScreen = ({
       {/* Video backgrounds */}
       {SCENES.map((s) => (
         <div key={s.id} className={`absolute inset-0 transition-opacity duration-1000 ${scene === s.id ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            ref={(el) => { if (el) el.playbackRate = 0.8; }}
-            className="absolute inset-0 w-full h-full object-cover"
-            src={s.video}
-          />
+          {s.type === 'video' ? (
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              ref={(el) => { if (el) el.playbackRate = 0.8; }}
+              className="absolute inset-0 w-full h-full object-cover"
+              src={s.src}
+            />
+          ) : (
+            <>
+              <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url('${s.src}')` }} />
+              <StarField />
+            </>
+          )}
         </div>
       ))}
 
