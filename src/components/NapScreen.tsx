@@ -72,7 +72,7 @@ const NapScreen = ({
   const currentScene = SCENES.find(s => s.id === scene)!;
 
   return (
-    <div className="min-h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
+    <div className="h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
       {/* Video backgrounds */}
       {SCENES.map((s) => (
         <div key={s.id} className={`absolute inset-0 transition-opacity duration-1000 ${scene === s.id ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
@@ -81,7 +81,7 @@ const NapScreen = ({
             loop
             muted
             playsInline
-            ref={(el) => { if (el) el.playbackRate = 0.4; }}
+            ref={(el) => { if (el) el.playbackRate = 0.8; }}
             className="absolute inset-0 w-full h-full object-cover"
             src={s.video}
           />
