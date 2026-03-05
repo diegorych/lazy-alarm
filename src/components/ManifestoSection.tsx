@@ -96,6 +96,25 @@ const ManifestoSection = () => {
           className="w-auto h-32 object-contain"
         />
       </div>
+
+      {/* Buy me a coffee button */}
+      <div 
+        className={`mt-10 transition-all duration-1000 ease-out ${
+          isVisible 
+            ? 'opacity-100 translate-y-0' 
+            : 'opacity-0 translate-y-8'
+        }`}
+        style={{ transitionDelay: '1200ms' }}
+      >
+        <a
+          href="https://buymeacoffee.com/diegorych"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-white text-black text-sm md:text-base font-medium tracking-wide shadow-md hover:bg-neutral-100 hover:shadow-lg transition-colors transition-shadow duration-300"
+        >
+          Buy me a coffee
+        </a>
+      </div>
     </div>
   );
 };
