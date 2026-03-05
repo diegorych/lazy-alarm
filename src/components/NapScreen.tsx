@@ -3,11 +3,17 @@ import { Button } from '@/components/ui/button';
 import { useState, useEffect } from 'react';
 import DebugTimer from './DebugTimer';
 import CircularNapProgress from './CircularNapProgress';
-import StarField from './StarField';
 import useWhiteNoise from '@/hooks/useWhiteNoise';
-import { Volume2, VolumeX, Flame, Stars } from 'lucide-react';
+import { Volume2, VolumeX } from 'lucide-react';
 
-type NapScene = 'campfire' | 'night-sky';
+const SCENES = [
+  { id: 'campfire', emoji: '🔥', video: '/videos/campfire.mp4' },
+  { id: 'forest', emoji: '🌲', video: '/videos/forest.mp4' },
+  { id: 'water', emoji: '🌊', video: '/videos/water.mp4' },
+  { id: 'stars', emoji: '✨', video: '/videos/stars.mp4' },
+] as const;
+
+type NapScene = typeof SCENES[number]['id'];
 
 interface NapScreenProps {
   onStopNap: () => void;
@@ -57,68 +63,35 @@ const NapScreen = ({
     return () => clearInterval(interval);
   }, [phrases.length, isTransitioning]);
 
+  const cycleScene = () => {
+    const currentIndex = SCENES.findIndex(s => s.id === scene);
+    const nextIndex = (currentIndex + 1) % SCENES.length;
+    setScene(SCENES[nextIndex].id);
+  };
+
+  const currentScene = SCENES.find(s => s.id === scene)!;
+
   return (
     <div className="min-h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
-      {/* Campfire video background */}
-      <div className={`absolute inset-0 transition-opacity duration-1000 ${scene === 'campfire' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          src="/videos/campfire.mp4"
-        />
-      </div>
-
-      {/* Night sky background - duplicate mirrored in landscape */}
-      <div className={`transition-opacity duration-1000 ${scene === 'night-sky' ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <style>{`
-          .nap-bg-left, .nap-bg-right {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            background-image: url('/lovable-uploads/nap-bg-stars.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-          }
-          .nap-bg-left {
-            left: 0;
-            right: 0;
-          }
-          .nap-bg-right {
-            display: none;
-          }
-          @media (orientation: landscape) {
-            .nap-bg-left {
-              left: 0;
-              right: 50%;
-              background-position: right center;
-            }
-            .nap-bg-right {
-              display: block;
-              left: 50%;
-              right: 0;
-              transform: scaleX(-1);
-              background-position: right center;
-            }
-          }
-        `}</style>
-        <div className="nap-bg-left" />
-        <div className="nap-bg-right" />
-      </div>
-
-      {/* Animated star field (only for night-sky) */}
-      {scene === 'night-sky' && <StarField />}
+      {/* Video backgrounds */}
+      {SCENES.map((s) => (
+        <div key={s.id} className={`absolute inset-0 transition-opacity duration-1000 ${scene === s.id ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+            src={s.video}
+          />
+        </div>
+      ))}
 
       {/* Dark overlay with vignette */}
       <div 
         className="absolute inset-0 z-[1]"
         style={{
-          background: scene === 'campfire'
-            ? 'radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 100%)'
-            : 'radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.55) 100%)',
+          background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%)',
         }}
       />
 
@@ -128,11 +101,10 @@ const NapScreen = ({
           {/* Scene toggle - top left */}
           <div className="absolute top-6 left-6 z-20">
             <button
-              onClick={() => setScene(s => s === 'campfire' ? 'night-sky' : 'campfire')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md transition-all duration-300 text-sm font-wRegular bg-white/10 text-white/80 border border-white/20 hover:bg-white/20`}
+              onClick={cycleScene}
+              className="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 text-lg bg-white/10 border border-white/20 hover:bg-white/20"
             >
-              {scene === 'campfire' ? <Stars size={16} /> : <Flame size={16} />}
-              {scene === 'campfire' ? 'Night sky' : 'Campfire'}
+              {currentScene.emoji}
             </button>
           </div>
 
@@ -140,14 +112,13 @@ const NapScreen = ({
           <div className="absolute top-6 right-6 z-20">
             <button
               onClick={toggleWhiteNoise}
-              className={`flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md transition-all duration-300 text-sm font-wRegular ${
+              className={`w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 ${
                 isWhiteNoise 
                   ? 'bg-white/25 text-white border border-white/40' 
                   : 'bg-white/10 text-white/60 border border-white/20'
               }`}
             >
               {isWhiteNoise ? <Volume2 size={16} /> : <VolumeX size={16} />}
-              White noise
             </button>
           </div>
         </>
