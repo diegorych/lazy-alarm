@@ -101,6 +101,13 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     setIsAlarmRinging(false);
     stopAlarmLoop();
 
+    // Stop current alarm sound if it's playing
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      audioRef.current = null;
+    }
+
     // Clear the auto-extend timeout
     if (alarmTimeoutRef.current) {
       clearTimeout(alarmTimeoutRef.current);
