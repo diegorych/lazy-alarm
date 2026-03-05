@@ -81,6 +81,7 @@ const NapScreen = ({
             loop
             muted
             playsInline
+            ref={(el) => { if (el) el.playbackRate = 0.4; }}
             className="absolute inset-0 w-full h-full object-cover"
             src={s.video}
           />
