@@ -96,15 +96,17 @@ const NapScreen = ({
       {/* Top controls */}
       {!isTransitioning && (
         <>
-          {/* Scene toggle - top left */}
-          <div className="absolute top-6 left-6 z-20">
-            <button
-              onClick={cycleScene}
-              className="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 text-lg bg-white/10 border border-white/20 hover:bg-white/20"
-            >
-              {currentScene.emoji}
-            </button>
-          </div>
+          {/* Scene toggle - top left (mobile only) */}
+          {isMobile && (
+            <div className="absolute top-6 left-6 z-20">
+              <button
+                onClick={cycleScene}
+                className="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 text-lg bg-white/10 border border-white/20 hover:bg-white/20"
+              >
+                {currentScene.emoji}
+              </button>
+            </div>
+          )}
 
           {/* White noise button - top right */}
           <div className="absolute top-6 right-6 z-20">
