@@ -2,18 +2,16 @@
 import { Button } from '@/components/ui/button';
 import { useState, useEffect, useMemo } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
-import StarField from './StarField';
+
 import DebugTimer from './DebugTimer';
 import CircularNapProgress from './CircularNapProgress';
 import useWhiteNoise from '@/hooks/useWhiteNoise';
 import { Volume2, VolumeX } from 'lucide-react';
 
 const SCENES = [
-  { id: 'campfire', emoji: '🔥', type: 'video', src: '/videos/campfire.mp4' },
-  { id: 'forest', emoji: '🌲', type: 'video', src: '/videos/forest.mp4' },
-  { id: 'water', emoji: '🌊', type: 'video', src: '/videos/water.mp4' },
-  { id: 'stars', emoji: '✨', type: 'video', src: '/videos/stars.mp4' },
-  { id: 'night-sky', emoji: '🌙', type: 'image', src: '/lovable-uploads/nap-bg-stars.jpg' },
+  { id: 'campfire', type: 'video', src: '/videos/campfire.mp4', nextThumb: '/images/scene-stars.png' },
+  { id: 'stars', type: 'video', src: '/videos/stars.mp4', nextThumb: '/images/scene-room.png' },
+  { id: 'room', type: 'video', src: '/videos/room.mp4', nextThumb: '/images/scene-bonfire.png' },
 ] as const;
 
 type NapScene = typeof SCENES[number]['id'];
@@ -66,25 +64,15 @@ const NapScreen = ({
       {/* Video backgrounds */}
       {SCENES.map((s) => (
         <div key={s.id} className={`absolute inset-0 transition-opacity duration-1000 ${activeScene === s.id ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-          {s.type === 'video' ? (
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              ref={(el) => { if (el) el.playbackRate = 0.8; }}
-              className="absolute inset-0 w-full h-full object-cover"
-              src={s.src}
-            />
-          ) : (
-            <>
-              <div className="absolute inset-0 flex">
-                <div className="w-1/2 h-full bg-cover bg-right bg-no-repeat" style={{ backgroundImage: `url('${s.src}')` }} />
-                <div className="w-1/2 h-full bg-cover bg-left bg-no-repeat" style={{ backgroundImage: `url('${s.src}')`, transform: 'scaleX(-1)' }} />
-              </div>
-              <StarField />
-            </>
-          )}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            ref={(el) => { if (el) el.playbackRate = 0.8; }}
+            className="absolute inset-0 w-full h-full object-cover"
+            src={s.src}
+          />
         </div>
       ))}
 
@@ -104,9 +92,9 @@ const NapScreen = ({
             <div className="absolute top-6 left-6 z-20">
               <button
                 onClick={cycleScene}
-                className="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 text-lg bg-white/10 border border-white/20 hover:bg-white/20"
+                className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/40 shadow-lg shadow-black/30 transition-all duration-300 hover:border-white/60 hover:scale-105"
               >
-                {currentScene.emoji}
+                <img src={currentScene.nextThumb} alt="Next scene" className="w-full h-full object-cover" />
               </button>
             </div>
           )}
