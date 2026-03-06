@@ -92,9 +92,9 @@ const NapScreen = ({
             <div className="absolute top-6 left-6 z-20">
               <button
                 onClick={cycleScene}
-                className="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 text-lg bg-white/10 border border-white/20 hover:bg-white/20"
+                className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/40 shadow-lg shadow-black/30 transition-all duration-300 hover:border-white/60 hover:scale-105"
               >
-                {currentScene.emoji}
+                <img src={currentScene.nextThumb} alt="Next scene" className="w-full h-full object-cover" />
               </button>
             </div>
           )}
