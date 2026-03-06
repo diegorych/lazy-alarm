@@ -59,7 +59,7 @@ const NapScreen = ({
     setScene(SCENES[nextIndex].id);
   };
 
-  const currentScene = SCENES.find(s => s.id === scene)!;
+  const currentScene = SCENES.find(s => s.id === activeScene)!;
 
   return (
     <div className="h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
