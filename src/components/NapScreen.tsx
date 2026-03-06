@@ -64,25 +64,15 @@ const NapScreen = ({
       {/* Video backgrounds */}
       {SCENES.map((s) => (
         <div key={s.id} className={`absolute inset-0 transition-opacity duration-1000 ${activeScene === s.id ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-          {s.type === 'video' ? (
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              ref={(el) => { if (el) el.playbackRate = 0.8; }}
-              className="absolute inset-0 w-full h-full object-cover"
-              src={s.src}
-            />
-          ) : (
-            <>
-              <div className="absolute inset-0 flex">
-                <div className="w-1/2 h-full bg-cover bg-right bg-no-repeat" style={{ backgroundImage: `url('${s.src}')` }} />
-                <div className="w-1/2 h-full bg-cover bg-left bg-no-repeat" style={{ backgroundImage: `url('${s.src}')`, transform: 'scaleX(-1)' }} />
-              </div>
-              <StarField />
-            </>
-          )}
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            ref={(el) => { if (el) el.playbackRate = 0.8; }}
+            className="absolute inset-0 w-full h-full object-cover"
+            src={s.src}
+          />
         </div>
       ))}
 
