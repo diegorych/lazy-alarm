@@ -1,6 +1,7 @@
 
 import { Button } from '@/components/ui/button';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 import StarField from './StarField';
 import DebugTimer from './DebugTimer';
 import CircularNapProgress from './CircularNapProgress';
