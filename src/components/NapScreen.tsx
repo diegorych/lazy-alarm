@@ -9,11 +9,9 @@ import useWhiteNoise from '@/hooks/useWhiteNoise';
 import { Volume2, VolumeX } from 'lucide-react';
 
 const SCENES = [
-  { id: 'campfire', emoji: '🔥', type: 'video', src: '/videos/campfire.mp4' },
-  { id: 'forest', emoji: '🌲', type: 'video', src: '/videos/forest.mp4' },
-  { id: 'water', emoji: '🌊', type: 'video', src: '/videos/water.mp4' },
-  { id: 'stars', emoji: '✨', type: 'video', src: '/videos/stars.mp4' },
-  { id: 'night-sky', emoji: '🌙', type: 'image', src: '/lovable-uploads/nap-bg-stars.jpg' },
+  { id: 'campfire', type: 'video', src: '/videos/campfire.mp4', nextThumb: '/images/scene-stars.png' },
+  { id: 'stars', type: 'video', src: '/videos/stars.mp4', nextThumb: '/images/scene-room.png' },
+  { id: 'room', type: 'video', src: '/videos/room.mp4', nextThumb: '/images/scene-bonfire.png' },
 ] as const;
 
 type NapScene = typeof SCENES[number]['id'];
