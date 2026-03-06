@@ -1,6 +1,7 @@
 
 import { Button } from '@/components/ui/button';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 import StarField from './StarField';
 import DebugTimer from './DebugTimer';
 import CircularNapProgress from './CircularNapProgress';
@@ -34,8 +35,12 @@ const NapScreen = ({
   isTransitioning = false,
   onTestWakeUp
 }: NapScreenProps) => {
+  const isMobile = useIsMobile();
   const { isPlaying: isWhiteNoise, toggle: toggleWhiteNoise, stop: stopWhiteNoise } = useWhiteNoise();
   const [scene, setScene] = useState<NapScene>('campfire');
+
+  // On desktop, always force night-sky scene
+  const activeScene = isMobile ? scene : 'night-sky' as NapScene;
 
   useEffect(() => {
     // Bloquear scroll mientras está la pantalla de siesta
@@ -54,13 +59,13 @@ const NapScreen = ({
     setScene(SCENES[nextIndex].id);
   };
 
-  const currentScene = SCENES.find(s => s.id === scene)!;
+  const currentScene = SCENES.find(s => s.id === activeScene)!;
 
   return (
     <div className="h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
       {/* Video backgrounds */}
       {SCENES.map((s) => (
-        <div key={s.id} className={`absolute inset-0 transition-opacity duration-1000 ${scene === s.id ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div key={s.id} className={`absolute inset-0 transition-opacity duration-1000 ${activeScene === s.id ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           {s.type === 'video' ? (
             <video
               autoPlay
@@ -91,15 +96,17 @@ const NapScreen = ({
       {/* Top controls */}
       {!isTransitioning && (
         <>
-          {/* Scene toggle - top left */}
-          <div className="absolute top-6 left-6 z-20">
-            <button
-              onClick={cycleScene}
-              className="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 text-lg bg-white/10 border border-white/20 hover:bg-white/20"
-            >
-              {currentScene.emoji}
-            </button>
-          </div>
+          {/* Scene toggle - top left (mobile only) */}
+          {isMobile && (
+            <div className="absolute top-6 left-6 z-20">
+              <button
+                onClick={cycleScene}
+                className="w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 text-lg bg-white/10 border border-white/20 hover:bg-white/20"
+              >
+                {currentScene.emoji}
+              </button>
+            </div>
+          )}
 
           {/* White noise button - top right */}
           <div className="absolute top-6 right-6 z-20">
