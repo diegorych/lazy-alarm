@@ -65,7 +65,7 @@ const NapScreen = ({
     <div className="h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
       {/* Video backgrounds */}
       {SCENES.map((s) => (
-        <div key={s.id} className={`absolute inset-0 transition-opacity duration-1000 ${scene === s.id ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div key={s.id} className={`absolute inset-0 transition-opacity duration-1000 ${activeScene === s.id ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           {s.type === 'video' ? (
             <video
               autoPlay
