@@ -78,7 +78,10 @@ const NapScreen = ({
             />
           ) : (
             <>
-              <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: `url('${s.src}')` }} />
+              <div className="absolute inset-0 flex">
+                <div className="w-1/2 h-full bg-cover bg-right bg-no-repeat" style={{ backgroundImage: `url('${s.src}')` }} />
+                <div className="w-1/2 h-full bg-cover bg-left bg-no-repeat" style={{ backgroundImage: `url('${s.src}')`, transform: 'scaleX(-1)' }} />
+              </div>
               <StarField />
             </>
           )}
