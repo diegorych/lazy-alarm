@@ -5,7 +5,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 import DebugTimer from './DebugTimer';
 import CircularNapProgress from './CircularNapProgress';
-import useWhiteNoise from '@/hooks/useWhiteNoise';
+import useAmbientSound from '@/hooks/useAmbientSound';
 import { Volume2, VolumeX } from 'lucide-react';
 
 const SCENES = [
@@ -34,11 +34,9 @@ const NapScreen = ({
   onTestWakeUp
 }: NapScreenProps) => {
   const isMobile = useIsMobile();
-  const { isPlaying: isWhiteNoise, toggle: toggleWhiteNoise, stop: stopWhiteNoise } = useWhiteNoise();
   const [scene, setScene] = useState<NapScene>('campfire');
-
-  // On desktop, always force night-sky scene
   const activeScene = isMobile ? scene : 'night-sky' as NapScene;
+  const { isPlaying: isWhiteNoise, toggle: toggleWhiteNoise, stop: stopWhiteNoise } = useAmbientSound(activeScene as any);
 
   useEffect(() => {
     // Bloquear scroll mientras está la pantalla de siesta
