@@ -103,10 +103,13 @@ const CircularNapProgress = ({
                 key={i}
                 d={createSegmentPath(startAngle, endAngle)}
                 fill={`rgba(255, 255, 255, ${fillOpacity})`}
-                rx={cornerRadius}
-                filter={isCompleted ? 'url(#innerShadow)' : undefined}
+                stroke={`rgba(255, 255, 255, ${fillOpacity})`}
+                strokeWidth={cornerRadius * 2}
+                strokeLinejoin="round"
+                paintOrder="stroke"
+                filter="url(#innerShadow)"
                 style={{
-                  filter: isCompleted ? 'url(#segmentGlow)' : undefined,
+                  filter: isCompleted ? 'url(#segmentGlow)' : 'url(#innerShadow)',
                 }}
                 className="transition-all duration-1000"
               />
