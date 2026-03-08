@@ -37,7 +37,6 @@ const CircularNapProgress = ({
   const center = size / 2;
   const radius = 135;
   const strokeWidth = 30;
-  const cornerRadius = 4;
 
   const polarToCartesianFull = (cx: number, cy: number, r: number, angle: number) => {
     const rad = ((angle - 90) * Math.PI) / 180;
@@ -45,17 +44,11 @@ const CircularNapProgress = ({
   };
 
   const createSegmentPath = (startAngle: number, endAngle: number) => {
-    const innerRadius = radius - strokeWidth / 2;
-    const outerRadius = radius + strokeWidth / 2;
-
-    const outerStart = polarToCartesianFull(center, center, outerRadius, startAngle);
-    const outerEnd = polarToCartesianFull(center, center, outerRadius, endAngle);
-    const innerStart = polarToCartesianFull(center, center, innerRadius, endAngle);
-    const innerEnd = polarToCartesianFull(center, center, innerRadius, startAngle);
-
+    const start = polarToCartesianFull(center, center, radius, startAngle);
+    const end = polarToCartesianFull(center, center, radius, endAngle);
     const largeArc = endAngle - startAngle > 180 ? 1 : 0;
 
-    return `M ${outerStart.x} ${outerStart.y} A ${outerRadius} ${outerRadius} 0 ${largeArc} 1 ${outerEnd.x} ${outerEnd.y} L ${innerStart.x} ${innerStart.y} A ${innerRadius} ${innerRadius} 0 ${largeArc} 0 ${innerEnd.x} ${innerEnd.y} Z`;
+    return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y}`;
   };
 
   const filledSegments = progress * SEGMENTS;
@@ -100,24 +93,16 @@ const CircularNapProgress = ({
 
             const hasProgress = segmentProgress > 0.01;
             return (
-              <g key={i} filter={isCompleted ? 'url(#segmentGlow)' : hasProgress ? 'url(#innerShadow)' : undefined}>
-                <path
-                  d={createSegmentPath(startAngle, endAngle)}
-                  fill={`rgba(255, 255, 255, ${fillOpacity})`}
-                  className="transition-all duration-1000"
-                />
-                {hasProgress && (
-                  <path
-                    d={createSegmentPath(startAngle, endAngle)}
-                    fill="none"
-                    stroke={`rgba(255, 255, 255, ${fillOpacity})`}
-                    strokeWidth={cornerRadius * 2}
-                    strokeLinejoin="round"
-                    paintOrder="stroke"
-                    className="transition-all duration-1000"
-                  />
-                )}
-              </g>
+              <path
+                key={i}
+                d={createSegmentPath(startAngle, endAngle)}
+                fill="none"
+                stroke={`rgba(255, 255, 255, ${fillOpacity})`}
+                strokeWidth={strokeWidth}
+                strokeLinecap="round"
+                filter={isCompleted ? 'url(#segmentGlow)' : hasProgress ? 'url(#innerShadow)' : undefined}
+                className="transition-all duration-1000"
+              />
             );
           })}
         </g>
