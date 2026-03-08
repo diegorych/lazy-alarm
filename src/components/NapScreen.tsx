@@ -5,7 +5,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 
 import DebugTimer from './DebugTimer';
 import CircularNapProgress from './CircularNapProgress';
-import useWhiteNoise from '@/hooks/useWhiteNoise';
+import useAmbientSound from '@/hooks/useAmbientSound';
 import { Volume2, VolumeX } from 'lucide-react';
 
 const SCENES = [
