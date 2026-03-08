@@ -116,9 +116,8 @@ const CircularNapProgress = ({
                     paintOrder="stroke"
                     className="transition-all duration-1000"
                   />
-                )}
+              </g>
             );
-          })}
           })}
         </g>
       </svg>
