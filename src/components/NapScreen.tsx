@@ -34,11 +34,9 @@ const NapScreen = ({
   onTestWakeUp
 }: NapScreenProps) => {
   const isMobile = useIsMobile();
-  const { isPlaying: isWhiteNoise, toggle: toggleWhiteNoise, stop: stopWhiteNoise } = useAmbientSound(activeScene as any);
   const [scene, setScene] = useState<NapScene>('campfire');
-
-  // On desktop, always force night-sky scene
   const activeScene = isMobile ? scene : 'night-sky' as NapScene;
+  const { isPlaying: isWhiteNoise, toggle: toggleWhiteNoise, stop: stopWhiteNoise } = useAmbientSound(activeScene as any);
 
   useEffect(() => {
     // Bloquear scroll mientras está la pantalla de siesta
