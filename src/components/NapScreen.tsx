@@ -62,13 +62,15 @@ const NapScreen = ({
   return (
     <div className="h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
       {/* Desktop: static star image */}
+      {/* Desktop: mirrored star image for seamless look */}
       {!isMobile && (
-        <div className="absolute inset-0">
-          <img
-            src="/images/thestars.png"
-            alt="Night sky"
-            className="absolute inset-0 w-full h-full object-cover"
-          />
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 w-full h-full">
+            <img src="/images/thestars.png" alt="" className="w-full h-full object-cover" />
+            <img src="/images/thestars.png" alt="" className="w-full h-full object-cover scale-x-[-1]" />
+            <img src="/images/thestars.png" alt="" className="w-full h-full object-cover scale-y-[-1]" />
+            <img src="/images/thestars.png" alt="" className="w-full h-full object-cover scale-x-[-1] scale-y-[-1]" />
+          </div>
         </div>
       )}
 
