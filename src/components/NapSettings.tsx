@@ -52,11 +52,11 @@ const NapSettings = ({
           {/* Content */}
           <div className="flex-1 px-6 space-y-8 overflow-y-auto">
             {/* Nap duration slider */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-white/70 font-light">Nap duration</span>
-                <span className="text-sm text-white/90 font-medium tabular-nums">
-                  {napDuration} min
+            <div className="space-y-5">
+              <div className="flex items-baseline justify-between">
+                <span className="text-sm text-white/60 font-light tracking-wide">Nap duration</span>
+                <span className="text-2xl text-white/95 font-light tabular-nums tracking-tight">
+                  {napDuration}<span className="text-sm text-white/40 ml-1">min</span>
                 </span>
               </div>
               <Slider
@@ -65,11 +65,11 @@ const NapSettings = ({
                 min={5}
                 max={120}
                 step={5}
-                className="[&_[data-radix-slider-track]]:h-1 [&_[data-radix-slider-track]]:bg-white/10 [&_[data-radix-slider-range]]:bg-white/40 [&_[data-radix-slider-thumb]]:h-5 [&_[data-radix-slider-thumb]]:w-5 [&_[data-radix-slider-thumb]]:bg-white [&_[data-radix-slider-thumb]]:border-0"
+                className="[&_[data-radix-slider-track]]:h-[6px] [&_[data-radix-slider-track]]:bg-white/[0.06] [&_[data-radix-slider-track]]:rounded-full [&_[data-radix-slider-range]]:bg-gradient-to-r [&_[data-radix-slider-range]]:from-white/50 [&_[data-radix-slider-range]]:to-white/30 [&_[data-radix-slider-range]]:rounded-full [&_[data-radix-slider-thumb]]:h-[22px] [&_[data-radix-slider-thumb]]:w-[22px] [&_[data-radix-slider-thumb]]:bg-white [&_[data-radix-slider-thumb]]:border-0 [&_[data-radix-slider-thumb]]:shadow-[0_0_12px_rgba(255,255,255,0.25)] [&_[data-radix-slider-thumb]]:transition-shadow [&_[data-radix-slider-thumb]]:duration-200 [&_[data-radix-slider-thumb]]:hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] [&_[data-radix-slider-thumb]]:focus-visible:ring-0 [&_[data-radix-slider-thumb]]:focus-visible:ring-offset-0"
               />
-              <div className="flex justify-between text-[11px] text-white/30">
+              <div className="flex justify-between text-[11px] text-white/25 font-light">
                 <span>5 min</span>
-                <span>120 min</span>
+                <span>2 hrs</span>
               </div>
             </div>
 
