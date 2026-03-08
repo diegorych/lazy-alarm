@@ -100,19 +100,24 @@ const CircularNapProgress = ({
 
             const hasProgress = segmentProgress > 0.01;
             return (
-              <path
-                key={i}
-                d={createSegmentPath(startAngle, endAngle)}
-                fill={`rgba(255, 255, 255, ${fillOpacity})`}
-                stroke={`rgba(255, 255, 255, ${baseOpacity})`}
-                strokeWidth={cornerRadius * 2}
-                strokeLinejoin="round"
-                paintOrder="stroke"
-                style={{
-                  filter: isCompleted ? 'url(#segmentGlow)' : hasProgress ? 'url(#innerShadow)' : undefined,
-                }}
-                className="transition-all duration-1000"
-              />
+              <g key={i} filter={isCompleted ? 'url(#segmentGlow)' : hasProgress ? 'url(#innerShadow)' : undefined}>
+                <path
+                  d={createSegmentPath(startAngle, endAngle)}
+                  fill={`rgba(255, 255, 255, ${fillOpacity})`}
+                  className="transition-all duration-1000"
+                />
+                {hasProgress && (
+                  <path
+                    d={createSegmentPath(startAngle, endAngle)}
+                    fill="none"
+                    stroke={`rgba(255, 255, 255, ${fillOpacity})`}
+                    strokeWidth={cornerRadius * 2}
+                    strokeLinejoin="round"
+                    paintOrder="stroke"
+                    className="transition-all duration-1000"
+                  />
+                )}
+              </g>
             );
           })}
         </g>
