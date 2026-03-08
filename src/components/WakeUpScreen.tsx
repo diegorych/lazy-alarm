@@ -48,14 +48,14 @@ const WakeUpScreen = ({
       }`}>
         <Button
           onClick={onImAwake}
-          className="bg-white/10 backdrop-blur-xl backdrop-saturate-150 text-black/80 border-none px-12 py-4 text-lg font-normal rounded-full hover:bg-white/20 transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),inset_0_-1px_1px_rgba(0,0,0,0.05)] max-w-[200px] w-full"
+          className="bg-white/10 backdrop-blur-xl backdrop-saturate-150 text-black/80 border-none px-16 py-6 text-lg font-normal rounded-full hover:bg-white/20 transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),inset_0_-1px_1px_rgba(0,0,0,0.05)] max-w-[260px] w-full"
         >
           I'm awake
         </Button>
         
         <Button
           onClick={onLetMeBe}
-          className="bg-white/5 backdrop-blur-xl backdrop-saturate-150 text-black/60 border-none px-12 py-4 text-lg font-normal rounded-full hover:bg-white/15 transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),inset_0_-1px_1px_rgba(0,0,0,0.03)] max-w-[200px] w-full"
+          className="bg-white/5 backdrop-blur-xl backdrop-saturate-150 text-black/60 border-none px-16 py-6 text-lg font-normal rounded-full hover:bg-white/15 transition-all duration-300 shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),inset_0_-1px_1px_rgba(0,0,0,0.03)] max-w-[260px] w-full"
         >
           Let me be
         </Button>
