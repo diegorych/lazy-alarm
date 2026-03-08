@@ -4,6 +4,7 @@ import NapScreen from '@/components/NapScreen';
 import WakeUpScreen from '@/components/WakeUpScreen';
 import ManifestoSection from '@/components/ManifestoSection';
 import LiquidGradientSection from '@/components/LiquidGradientSection';
+import NapSettings from '@/components/NapSettings';
 import { useAlarmTimer } from '@/hooks/useAlarmTimer';
 
 export type AppState = 'main' | 'transitioning-to-nap' | 'napping' | 'wake-up-screen' | 'transitioning-to-main';
