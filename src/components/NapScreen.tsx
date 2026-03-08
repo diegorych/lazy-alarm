@@ -34,7 +34,7 @@ const NapScreen = ({
   onTestWakeUp
 }: NapScreenProps) => {
   const isMobile = useIsMobile();
-  const { isPlaying: isWhiteNoise, toggle: toggleWhiteNoise, stop: stopWhiteNoise } = useWhiteNoise();
+  const { isPlaying: isWhiteNoise, toggle: toggleWhiteNoise, stop: stopWhiteNoise } = useAmbientSound(activeScene as any);
   const [scene, setScene] = useState<NapScene>('campfire');
 
   // On desktop, always force night-sky scene
