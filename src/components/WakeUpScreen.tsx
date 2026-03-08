@@ -14,16 +14,13 @@ const WakeUpScreen = ({
 }: WakeUpScreenProps) => {
   return (
     <div className="min-h-screen flex flex-col px-8 relative overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `url('/lovable-uploads/4c830c87-26a3-4c4c-ae40-be159d362028.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}
-      />
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0 bg-[#f8f0ea]">
+        <div className="wakeup-blob wakeup-blob-1" />
+        <div className="wakeup-blob wakeup-blob-2" />
+        <div className="wakeup-blob wakeup-blob-3" />
+        <div className="wakeup-blob wakeup-blob-4" />
+      </div>
       
       {/* Logo at top */}
       <div className={`relative z-10 pt-16 flex justify-center transition-all duration-1000 ${
