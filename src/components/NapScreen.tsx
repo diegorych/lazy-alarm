@@ -61,8 +61,19 @@ const NapScreen = ({
 
   return (
     <div className="h-screen flex flex-col px-8 relative overflow-hidden animate-transition-in">
-      {/* Video backgrounds */}
-      {SCENES.map((s) => (
+      {/* Desktop: static star image */}
+      {!isMobile && (
+        <div className="absolute inset-0">
+          <img
+            src="/images/thestars.png"
+            alt="Night sky"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
+      )}
+
+      {/* Mobile: Video backgrounds */}
+      {isMobile && SCENES.map((s) => (
         <div key={s.id} className={`absolute inset-0 transition-opacity duration-1000 ${activeScene === s.id ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <video
             autoPlay
