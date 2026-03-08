@@ -31,6 +31,12 @@ const TakeANapCard = ({ onStartNap, isTransitioning = false }: TakeANapCardProps
         </button>
       </div>
 
+      {/* Descriptive paragraph */}
+      <div className={`pb-16 flex justify-center relative z-10 px-8 ${isTransitioning ? 'animate-text-move-out' : 'animate-fade-in'}`}>
+        <p className="font-light text-white/60 text-center max-w-lg leading-relaxed text-sm">
+          A short, no-pressure nap. Just enough to reset without ruining your day.
+        </p>
+      </div>
     </div>
   );
 };
