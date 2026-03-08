@@ -27,7 +27,7 @@ const Index = () => {
     setTimeout(() => {
       setAppState('napping');
       quickNapTimer.startNap();
-    }, 2000);
+    }, 1000);
   };
 
   const handleImAwake = () => {
@@ -36,7 +36,7 @@ const Index = () => {
     
     setTimeout(() => {
       setAppState('main');
-    }, 2000);
+    }, 1000);
   };
 
   const handleLetMeBe = () => {
