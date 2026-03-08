@@ -129,8 +129,8 @@ const NapScreen = ({
         <div className="relative z-10 pb-16 flex justify-center">
           <Button
             onClick={onStopNap}
-            className="bg-white/10 text-white border border-white/25 px-14 py-5 text-lg font-light rounded-full hover:bg-white/20 transition-all duration-300 backdrop-blur-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.3),inset_0_-1px_1px_rgba(0,0,0,0.1),0_4px_20px_rgba(0,0,0,0.3)] opacity-100"
-            style={{ WebkitBackdropFilter: 'blur(24px)' }}
+            className="bg-white/[0.06] text-white/90 border border-white/[0.12] px-14 py-5 text-lg font-light rounded-full hover:bg-white/[0.1] transition-all duration-300 shadow-[inset_0_0.5px_0.5px_rgba(255,255,255,0.15),0_2px_12px_rgba(0,0,0,0.2)]"
+            style={{ WebkitBackdropFilter: 'blur(40px)', backdropFilter: 'blur(40px) saturate(1.4)' }}
           >
             I'm awake
           </Button>
