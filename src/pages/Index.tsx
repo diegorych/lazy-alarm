@@ -11,10 +11,14 @@ export type AppState = 'main' | 'transitioning-to-nap' | 'napping' | 'wake-up-sc
 
 const Index = () => {
   const [appState, setAppState] = useState<AppState>('main');
+  const [napDuration, setNapDuration] = useState(25);
+  const [autoStopAlarm, setAutoStopAlarm] = useState(true);
 
   const quickNapTimer = useAlarmTimer({
     onAlarmRing: () => setAppState('wake-up-screen'),
-    onAlarmStop: () => setAppState('main')
+    onAlarmStop: () => setAppState('main'),
+    napDurationMinutes: napDuration,
+    autoStopAlarm,
   });
 
   const handleStartNap = () => {
@@ -75,6 +79,16 @@ const Index = () => {
           <div className="absolute inset-x-0 top-10 flex justify-center z-20">
             <img src="/logo.svg" alt="lazy alarm logo" className="h-8 md:h-10 w-auto" />
           </div>
+
+          {/* Settings */}
+          {appState === 'main' && (
+            <NapSettings
+              napDuration={napDuration}
+              onNapDurationChange={setNapDuration}
+              autoStopAlarm={autoStopAlarm}
+              onAutoStopAlarmChange={setAutoStopAlarm}
+            />
+          )}
 
           {/* Main hero */}
           <div className="w-full h-full relative z-10 flex flex-col">
