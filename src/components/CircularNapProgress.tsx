@@ -117,15 +117,8 @@ const CircularNapProgress = ({
                     className="transition-all duration-1000"
                   />
                 )}
-              </g>
-                strokeLinejoin="round"
-                paintOrder="stroke"
-                style={{
-                  filter: isCompleted ? 'url(#segmentGlow)' : hasProgress ? 'url(#innerShadow)' : undefined,
-                }}
-                className="transition-all duration-1000"
-              />
             );
+          })}
           })}
         </g>
       </svg>
