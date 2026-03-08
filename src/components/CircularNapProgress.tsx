@@ -37,6 +37,7 @@ const CircularNapProgress = ({
   const center = size / 2;
   const radius = 135;
   const strokeWidth = 30;
+  const cornerRadius = 4;
 
   const polarToCartesianFull = (cx: number, cy: number, r: number, angle: number) => {
     const rad = ((angle - 90) * Math.PI) / 180;
@@ -44,11 +45,17 @@ const CircularNapProgress = ({
   };
 
   const createSegmentPath = (startAngle: number, endAngle: number) => {
-    const start = polarToCartesianFull(center, center, radius, startAngle);
-    const end = polarToCartesianFull(center, center, radius, endAngle);
+    const innerRadius = radius - strokeWidth / 2;
+    const outerRadius = radius + strokeWidth / 2;
+
+    const outerStart = polarToCartesianFull(center, center, outerRadius, startAngle);
+    const outerEnd = polarToCartesianFull(center, center, outerRadius, endAngle);
+    const innerStart = polarToCartesianFull(center, center, innerRadius, endAngle);
+    const innerEnd = polarToCartesianFull(center, center, innerRadius, startAngle);
+
     const largeArc = endAngle - startAngle > 180 ? 1 : 0;
 
-    return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y}`;
+    return `M ${outerStart.x} ${outerStart.y} A ${outerRadius} ${outerRadius} 0 ${largeArc} 1 ${outerEnd.x} ${outerEnd.y} L ${innerStart.x} ${innerStart.y} A ${innerRadius} ${innerRadius} 0 ${largeArc} 0 ${innerEnd.x} ${innerEnd.y} Z`;
   };
 
   const filledSegments = progress * SEGMENTS;
@@ -91,16 +98,16 @@ const CircularNapProgress = ({
             const baseOpacity = 0.15;
             const fillOpacity = baseOpacity + segmentProgress * 0.85;
 
-            const hasProgress = segmentProgress > 0.01;
             return (
               <path
                 key={i}
                 d={createSegmentPath(startAngle, endAngle)}
-                fill="none"
-                stroke={`rgba(255, 255, 255, ${fillOpacity})`}
-                strokeWidth={strokeWidth}
-                strokeLinecap="round"
-                filter={isCompleted ? 'url(#segmentGlow)' : hasProgress ? 'url(#innerShadow)' : undefined}
+                fill={`rgba(255, 255, 255, ${fillOpacity})`}
+                rx={cornerRadius}
+                filter={isCompleted ? 'url(#innerShadow)' : undefined}
+                style={{
+                  filter: isCompleted ? 'url(#segmentGlow)' : undefined,
+                }}
                 className="transition-all duration-1000"
               />
             );
