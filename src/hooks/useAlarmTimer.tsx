@@ -4,9 +4,11 @@ import { useState, useEffect, useRef } from 'react';
 interface UseAlarmTimerProps {
   onAlarmRing: () => void;
   onAlarmStop: () => void;
+  napDurationMinutes?: number;
+  autoStopAlarm?: boolean;
 }
 
-export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) => {
+export const useAlarmTimer = ({ onAlarmRing, onAlarmStop, napDurationMinutes = 25, autoStopAlarm = true }: UseAlarmTimerProps) => {
   const [isNapping, setIsNapping] = useState(false);
   const [isAlarmRinging, setIsAlarmRinging] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(0);
@@ -68,11 +70,9 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
     setIsNapping(true);
     setHasRetried(false);
 
-    // Random duration between 20-30 minutes
-    const randomMinutes = Math.floor(Math.random() * 11) + 20; // 20 to 30 minutes
-    const napDuration = randomMinutes * 60 * 1000; // convert to milliseconds
+    const napDuration = napDurationMinutes * 60 * 1000;
     setActualDuration(napDuration);
-    console.log(`Nap duration: ${randomMinutes} minutes`);
+    console.log(`Nap duration: ${napDurationMinutes} minutes`);
 
     setTimeRemaining(napDuration);
 
@@ -89,10 +89,15 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop }: UseAlarmTimerProps) 
 
     startAlarmLoop();
 
-    // Auto-extend after 30 seconds if no response
+    // Auto-extend or auto-stop after 30 seconds if no response
     alarmTimeoutRef.current = setTimeout(() => {
-      console.log('No response, extending nap by 10 minutes...');
-      extendNap();
+      if (autoStopAlarm) {
+        console.log('No response, auto-stopping alarm...');
+        stopAlarm();
+      } else {
+        console.log('No response, extending nap by 10 minutes...');
+        extendNap();
+      }
     }, 30 * 1000);
   };
 
