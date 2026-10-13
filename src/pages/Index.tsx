@@ -76,7 +76,7 @@ const Index = () => {
           <LiquidGradientSection />
 
           {/* Brand word */}
-          <div className="absolute inset-x-0 top-10 flex justify-center z-20">
+          <div className="absolute inset-x-0 top-16 flex justify-center z-20">
             <span className="text-sm md:text-base font-medium tracking-[0.35em] uppercase text-white/90">Lazy Alarm</span>
           </div>
 
@@ -131,16 +131,6 @@ const Index = () => {
         </div>
       )}
 
-      {/* Debug button: force wake up screen */}
-      {appState === 'main' && (
-        <button
-          type="button"
-          onClick={handleTestWakeUp}
-          className="fixed bottom-4 right-4 z-50 text-xs md:text-sm text-neutral-400 hover:text-white/80 bg-white/5 hover:bg-white/10 rounded-full px-4 py-2 transition-colors duration-200"
-        >
-          Test wake up
-        </button>
-      )}
     </div>
   );
 };
