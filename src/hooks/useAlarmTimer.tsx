@@ -16,11 +16,11 @@ export const useAlarmTimer = ({ onAlarmRing, onAlarmStop, napDurationMinutes = 2
   const [startTime, setStartTime] = useState<number | undefined>(undefined);
   const [actualDuration, setActualDuration] = useState<number | undefined>(undefined);
 
-  const napTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const alarmTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const napTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const alarmTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const retryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
-  const alarmIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const alarmIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Initialize audio context
   useEffect(() => {
