@@ -20,12 +20,12 @@ const NapSettings = ({
 
   return (
     <>
-      <div className="absolute top-10 right-6 z-30">
+      <div className="absolute top-14 right-6 z-30">
         <button
           onClick={() => setIsOpen(true)}
-          className="w-9 h-9 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 bg-white/[0.06] text-white/50 border border-white/[0.08] hover:bg-white/10 hover:text-white/70"
+          className="w-12 h-12 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 bg-white/[0.06] text-white/60 border border-white/[0.08] hover:bg-white/10 hover:text-white/80"
         >
-          <Settings size={16} />
+          <Settings size={22} />
         </button>
       </div>
 
