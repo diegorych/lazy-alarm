@@ -49,6 +49,13 @@ const Index = () => {
     setAppState('main');
   };
 
+  const handleTestWakeUp = () => {
+    if (quickNapTimer.triggerAlarm) {
+      quickNapTimer.triggerAlarm();
+    }
+    setAppState('wake-up-screen');
+  };
+
 
   return (
     <div className="min-h-screen w-full overflow-hidden relative bg-black">
