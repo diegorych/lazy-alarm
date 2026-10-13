@@ -75,9 +75,9 @@ const Index = () => {
           {/* Background */}
           <LiquidGradientSection />
 
-          {/* Logo */}
+          {/* Brand word */}
           <div className="absolute inset-x-0 top-10 flex justify-center z-20">
-            <img src="/logo.svg" alt="lazy alarm logo" className="h-8 md:h-10 w-auto" />
+            <span className="text-sm md:text-base font-medium tracking-[0.35em] uppercase text-white/90">Lazy Alarm</span>
           </div>
 
           {/* Settings */}
