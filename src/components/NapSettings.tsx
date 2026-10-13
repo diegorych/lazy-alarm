@@ -16,6 +16,10 @@ const NapSettings = ({
   autoStopAlarm,
   onAutoStopAlarmChange,
 }: NapSettingsProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
       <div className="absolute top-14 right-6 z-30">
         <button
           onClick={() => setIsOpen(true)}
