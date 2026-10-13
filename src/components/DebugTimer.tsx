@@ -70,7 +70,7 @@ const DebugTimer = ({ isNapping, napMode, startTime, actualDuration }: DebugTime
   }, [isNapping, startTime, napMode, actualDuration]);
 
   // Only show in development or when explicitly enabled
-  const isDevelopment = process.env.NODE_ENV === 'development';
+  const isDevelopment = import.meta.env.DEV;
   
   if (!isDevelopment || !isNapping) {
     return null;

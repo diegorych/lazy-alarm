@@ -1,0 +1,1 @@
+Desktop renders the same app in a same-origin phone-sized iframe; the phone-preview query flag prevents recursion and preserves mobile viewport behavior, including fixed settings screens.

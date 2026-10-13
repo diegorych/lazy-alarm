@@ -59,6 +59,72 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --phone-stage: #18191c;
+  --phone-metal: #72747a;
+  --phone-edge: #27282c;
+  --phone-black: #050505;
+  --phone-highlight: #d0d1d4;
+  --phone-shadow: 0 24px 70px #0009;
+}
+.phone-stage {
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--phone-stage);
+}
+.phone-case {
+  position: relative;
+  width: 414px;
+  height: 868px;
+  padding: 10px;
+  border: 2px solid var(--phone-metal);
+  border-radius: 58px;
+  background: var(--phone-black);
+  box-shadow: var(--phone-shadow), inset 0 0 0 2px var(--phone-edge);
+  transform-origin: top left;
+}
+.phone-screen {
+  display: block;
+  width: 390px;
+  height: 844px;
+  border: 0;
+  border-radius: 46px;
+  background: var(--phone-black);
+}
+.phone-island {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 112px;
+  height: 28px;
+  border-radius: 20px;
+  background: var(--phone-black);
+  pointer-events: none;
+}
+.phone-home-indicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 118px;
+  height: 4px;
+  border-radius: 8px;
+  background: var(--phone-highlight);
+  pointer-events: none;
+}
+.phone-side-button {
+  position: absolute;
+  width: 4px;
+  background: var(--phone-metal);
+  border-radius: 2px;
+}
+.phone-side-left { left: -5px; top: 160px; height: 74px; }
+.phone-side-right { right: -5px; top: 200px; height: 90px; }
+
 /* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
 
 @layer base {
