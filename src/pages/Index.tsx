@@ -49,15 +49,6 @@ const Index = () => {
     setAppState('main');
   };
 
-  const handleTestWakeUp = () => {
-    console.log('Test wake up button pressed');
-    // Trigger the alarm sound before showing wake up screen
-    if (quickNapTimer.triggerAlarm) {
-      console.log('Calling triggerAlarm for test');
-      quickNapTimer.triggerAlarm();
-    }
-    setAppState('wake-up-screen');
-  };
 
   return (
     <div className="min-h-screen w-full overflow-hidden relative bg-black">
